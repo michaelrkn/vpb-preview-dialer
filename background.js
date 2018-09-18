@@ -30,7 +30,8 @@ chrome.runtime.onMessage.addListener(function(message) {
 
 function dial(number) {
   var params = {
-    To: number
+    To: number,
+    From: localStorage.getItem('outgoingCallerID')
   };
   Twilio.Device.connect(params);
 }

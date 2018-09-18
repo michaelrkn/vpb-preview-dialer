@@ -26,6 +26,7 @@ window.onload = function() {
       } else {
         alert('When called, enter ' + json.verificationCode + ' when asked for your verification code.');
       }
+      localStorage.setItem('outgoingCallerID', phone);
     });
   }, false);
 }
