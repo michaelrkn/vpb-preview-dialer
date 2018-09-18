@@ -7,10 +7,6 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 });
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.create({'url': chrome.extension.getURL('options.html'), 'selected': true});
-});
-
 window.onload = function() {
   fetch('https://cardinal-moose-3646.twil.io/capability-token').then(function(response) {
     return response.json();
