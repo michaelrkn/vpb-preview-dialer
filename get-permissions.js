@@ -24,7 +24,7 @@ window.onload = function() {
       if (json.code === 21450) {
         alert('Your Caller ID is set.');
       } else {
-        alert('When called, enter ' + json.code + ' when asked for your verification code.');
+        alert('When called, enter ' + json.verificationCode + ' when asked for your verification code.');
       }
     });
   }, false);
