@@ -10,4 +10,16 @@ window.onload = function() {
     Twilio.Device.connect();
     Twilio.Device.disconnectAll();
   });
+
+  var form = document.getElementById('verify-phone');
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    var phone = document.getElementById('number').value;
+    fetch('https://cardinal-moose-3646.twil.io/verify-caller-id?phone=' + phone).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      alert('When called, enter ' + json.code + 'when asked for your verification code.');
+    });
+  }, false);
 }
