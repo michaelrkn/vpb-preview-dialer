@@ -4,7 +4,7 @@ window.onload = function() {
 
   if (dial) {
     listenForH()
-    var phone = formattedPhone.replace('(','').replace(')','').replace(' ','').replace('-','');
+    var phone = formattedPhone.replace(/\D/g,'');
     chrome.runtime.sendMessage(phone);
   }
 }

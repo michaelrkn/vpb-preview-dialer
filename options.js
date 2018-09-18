@@ -15,7 +15,7 @@ window.onload = function() {
   form.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    var phone = document.getElementById('number').value;
+    var phone = document.getElementById('number').value.replace(/\D/g,'');
     fetch('https://cardinal-moose-3646.twil.io/verify-caller-id?phone=' + phone)
     .then(function(response) {
       return response.json();
