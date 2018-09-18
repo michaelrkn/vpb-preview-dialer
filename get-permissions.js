@@ -9,6 +9,5 @@ window.onload = function() {
   Twilio.Device.ready(function() {
     Twilio.Device.connect();
     Twilio.Device.disconnectAll();
-    window.close();
   });
 }
