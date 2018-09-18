@@ -16,10 +16,16 @@ window.onload = function() {
     event.preventDefault();
 
     var phone = document.getElementById('number').value;
-    fetch('https://cardinal-moose-3646.twil.io/verify-caller-id?phone=' + phone).then(function(response) {
+    fetch('https://cardinal-moose-3646.twil.io/verify-caller-id?phone=' + phone)
+    .then(function(response) {
       return response.json();
-    }).then(function(json) {
-      alert('When called, enter ' + json.code + 'when asked for your verification code.');
+    })
+    .then(function(json) {
+      if (json.code === 21450) {
+        alert('Your Caller ID is set.');
+      } else {
+        alert('When called, enter ' + json.code + ' when asked for your verification code.');
+      }
     });
   }, false);
 }
