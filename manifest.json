@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "VPB Preview Dialer",
+  "description": "Turns Virtual Phone Bank into a preview dialer.",
+  "version": "0.0.1",
+  "content_security_policy": "script-src 'self' https://media.twiliocdn.com; object-src 'self'",
+  "background": {
+    "page": "background.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://van.statevoices.org/ContactDetailScript.aspx*", "https://www.votebuilder.com/ContactDetailScript.aspx*"],
+      "js": ["hotkeys.js"]
+    }
+  ]
+}
