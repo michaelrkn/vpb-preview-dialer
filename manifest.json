@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": ["https://van.statevoices.org/ContactDetailScript.aspx*", "https://www.votebuilder.com/ContactDetailScript.aspx*"],
-      "js": ["hotkeys.js"]
+      "js": ["content_script.js"]
     }
   ]
 }
