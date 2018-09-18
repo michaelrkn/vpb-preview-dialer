@@ -1,15 +1,12 @@
 window.onload = function() {
   var formattedPhone = document.getElementById('current-number').firstElementChild.innerText;
-  var dial = confirm('Dial ' + formattedPhone + '?');
+  var phone = formattedPhone.replace(/\D/g,'');
 
+  var dial = confirm('Dial ' + formattedPhone + '?');
   if (dial) {
-    listenForH()
-    var phone = formattedPhone.replace(/\D/g,'');
     chrome.runtime.sendMessage(phone);
   }
-}
 
-function listenForH() {
   document.addEventListener('keypress', (event) => {
     if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
       return;
@@ -20,6 +17,10 @@ function listenForH() {
     var keyName = event.key;
     if (keyName === 'h') {
       chrome.runtime.sendMessage("hangup");
+      return;
+    }
+    if (keyName === 'c') {
+      chrome.runtime.sendMessage(phone);
       return;
     }
   });
