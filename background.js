@@ -1,10 +1,14 @@
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
     chrome.tabs.create({
-      url: chrome.extension.getURL("get-permissions.html"),
+      url: chrome.extension.getURL("options.html"),
       active: true
     });
   }
+});
+
+chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.tabs.create({'url': chrome.extension.getURL('options.html'), 'selected': true});
 });
 
 window.onload = function() {
