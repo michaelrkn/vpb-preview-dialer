@@ -51,12 +51,14 @@ window.onload = function() {
       } else {
         nextNumber.click();
       }
+      chrome.runtime.sendMessage("hangup");
       return;
     }
 
     if (keyName === 's') {
       var next = document.querySelectorAll('input[value="Skip"]')[0];
       next.click();
+      chrome.runtime.sendMessage("hangup");
       return;
     }
 
