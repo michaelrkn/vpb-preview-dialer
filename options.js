@@ -1,4 +1,6 @@
 window.onload = function() {
+  document.getElementById('number').value = localStorage.getItem('outgoingCallerID');
+
   fetch('https://cardinal-moose-3646.twil.io/capability-token').then(function(response) {
     return response.json();
   })
