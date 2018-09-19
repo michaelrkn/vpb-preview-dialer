@@ -2,10 +2,14 @@ window.onload = function() {
   var formattedPhone = document.getElementById('current-number').firstElementChild.innerText;
   var phone = formattedPhone.replace(/\D/g,'');
 
-  var dial = confirm('Dial ' + formattedPhone + '?');
-  if (dial) {
-    chrome.runtime.sendMessage(phone);
-  }
+  chrome.runtime.sendMessage('getAskToCall', function(askToCall) {
+    if (askToCall) {
+      var dial = confirm('Dial ' + formattedPhone + '?');
+      if (dial) {
+        chrome.runtime.sendMessage(phone);
+      }
+    }
+  });
 
   document.addEventListener('keypress', (event) => {
     if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {

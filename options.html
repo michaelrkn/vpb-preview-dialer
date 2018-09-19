@@ -12,6 +12,12 @@
       .container {
         max-width: 80rem;
       }
+      .label-inline {
+        font-weight: 300;
+      }
+      input {
+        font-size: inherit;
+      }
     </style>
   </head>
   <body>
@@ -46,6 +52,14 @@
       <p>
         If you don't make a call at first, you can make it laster by pressing "c".
       </p>
+      <p>
+        Uncheck the box below if you'd like to disable the pop-up that asks you if you'd like to call the number.
+        You'll still be able to make calls by pressing "c".
+      </p>
+      <div>
+        <input type="checkbox" id="askToCall" checked>
+        <label class="label-inline" for="askToCall">Ask to call when each new contact loads.</label>
+      </div>
     </main>
     <script type="text/javascript" src="https://media.twiliocdn.com/sdk/js/client/v1.5/twilio.min.js"></script>
     <script type="text/javascript" src="options.js"></script>

@@ -1,5 +1,6 @@
 window.onload = function() {
   document.getElementById('number').value = localStorage.getItem('outgoingCallerID');
+  document.getElementById('askToCall').checked = localStorage.getItem('askToCall');
 
   fetch('https://cardinal-moose-3646.twil.io/capability-token').then(function(response) {
     return response.json();
@@ -31,4 +32,8 @@ window.onload = function() {
       localStorage.setItem('outgoingCallerID', phone);
     });
   }, false);
+
+  document.getElementById('askToCall').onclick = function(event) {
+    localStorage.setItem('askToCall', document.getElementById('askToCall').checked);
+  }
 }
