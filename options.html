@@ -18,6 +18,9 @@
       input {
         font-size: inherit;
       }
+      li {
+        margin-bottom: 0;
+      }
     </style>
   </head>
   <body>
@@ -34,24 +37,15 @@
         so that you can make calls through the browser on Virtual Phone Bank.
       </p>
 
-      <h2>Outgoing Caller ID</h2>
+      <h2>Options</h2>
       <p>
         Below, enter the phone number you'd like to use for the outgoing caller ID below.
         If it's not already in our system, we'll call you to verify it.
       </p>
-
       <form id="verify-phone">
         <input type="text" id="number">
         <input type="submit" id="submit">
       </form>
-
-      <h2>Keyboard Commands</h2>
-      <p>
-        When you are on the phone, you can press "h" to hang up.
-      </p>
-      <p>
-        If you don't make a call at first, you can make it laster by pressing "c".
-      </p>
       <p>
         Uncheck the box below if you'd like to disable the pop-up that asks you if you'd like to call the number.
         You'll still be able to make calls by pressing "c".
@@ -60,6 +54,24 @@
         <input type="checkbox" id="askToCall" checked>
         <label class="label-inline" for="askToCall">Ask to call when each new contact loads.</label>
       </div>
+
+      <h2>Keyboard Commands</h2>
+      <p>When you are on the phone, you can press "h" to hang up.</p>
+      <p>If you don't make a call at first, you can make it later by pressing "c".</p>
+      <p>For "Couldn't Reach" statuses, press:</p>
+      <ul>
+        <li>n: Not Home</li>
+        <li>r: Refused</li>
+        <li>m: Moved</li>
+        <li>b: Busy</li>
+        <li>w: Wrong Number</li>
+        <li>d: Disconnected</li>
+        <li>l: Other Language</li>
+      </ul>
+      <p>You don't need to click "I Couldn't Reach..." - just press the button.</p>
+      <p>You can also press "s" to open the Scheduler, and "o" to go to Notes.</p>
+      <p>Then, press Enter for "Save & Next Call".</p>
+      <p>Or, press "s" for "Skip".</p>
     </main>
     <script type="text/javascript" src="https://media.twiliocdn.com/sdk/js/client/v1.5/twilio.min.js"></script>
     <script type="text/javascript" src="options.js"></script>
