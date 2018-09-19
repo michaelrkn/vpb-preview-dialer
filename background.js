@@ -8,24 +8,34 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 });
 
-window.onload = function() {
-  fetch('https://cardinal-moose-3646.twil.io/capability-token').then(function(response) {
-    return response.json();
-  })
-  .then(function(json) {
-    Twilio.Device.setup(json.token);
-  });
-};
-
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   if (message === 'getAskToCall') {
     sendResponse(JSON.parse(localStorage.getItem('askToCall')));
   } else if (message === "hangup") {
     hangup();
   } else {
-    dial(message);
+    checkConnection().then(() => { dial(message) });
   }
 });
+
+window.onload = getToken();
+
+function getToken() {
+  return fetch('https://cardinal-moose-3646.twil.io/capability-token').then(function(response) {
+    return response.json();
+  })
+  .then(function(json) {
+    Twilio.Device.setup(json.token);
+  });
+}
+
+function checkConnection() {
+  if (Twilio.Device.status() === 'offline') {
+    return getToken();
+  } else {
+    return Promise.resolve();
+  }
+}
 
 function dial(number) {
   var params = {
