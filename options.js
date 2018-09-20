@@ -16,18 +16,22 @@ window.onload = function() {
     event.preventDefault();
 
     var phone = document.getElementById('number').value.replace(/\D/g,'');
-    fetch('https://cardinal-moose-3646.twil.io/verify-caller-id?phone=' + phone)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      if (json.code === 21450) {
-        alert('Your Caller ID is set.');
-      } else {
-        alert('When called, enter ' + json.verificationCode + ' when asked for your verification code.');
-      }
-      localStorage.setItem('outgoingCallerID', phone);
-    });
+    if (phone.length !== 10) {
+      alert('Please enter a valid 10-digit phone number.');
+    } else {
+      fetch('https://cardinal-moose-3646.twil.io/verify-caller-id?phone=' + phone)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        if (json.code === 21450) {
+          alert('Your Caller ID is set.');
+        } else {
+          alert('When called, enter ' + json.verificationCode + ' when asked for your verification code.');
+        }
+        localStorage.setItem('outgoingCallerID', phone);
+      });
+    }
   }, false);
 
   document.getElementById('callOnLoad').onclick = function(event) {
