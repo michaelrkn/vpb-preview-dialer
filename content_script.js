@@ -1,8 +1,14 @@
 window.onload = function() {
   var numberElement = document.getElementById('current-number');
   if (numberElement) { // make sure they have a phone number
-    var formattedPhone = numberElement.firstElementChild.innerText;
+    var phoneLink = numberElement.firstElementChild;
+    var formattedPhone = phoneLink.innerText;
     var phone = formattedPhone.replace(/\D/g,'');
+
+    phoneLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      chrome.runtime.sendMessage(phone);
+    });
   }
 
   chrome.runtime.sendMessage('getAskToCall', function(askToCall) {
