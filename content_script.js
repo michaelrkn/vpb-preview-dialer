@@ -67,8 +67,10 @@ window.onload = function() {
 
     if (keyName === 's') {
       var next = document.querySelectorAll('input[value="Skip"]')[0];
-      next.click();
-      chrome.runtime.sendMessage("hangup");
+      if (next) {
+        next.click();
+        chrome.runtime.sendMessage("hangup");
+      }
       return;
     }
 
