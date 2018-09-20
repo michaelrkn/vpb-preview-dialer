@@ -1,22 +1,26 @@
+function confirmDial(formattedPhone) {
+  var dial = confirm('Dial ' + formattedPhone + '?');
+    if (dial) {
+      var phone = formattedPhone.replace(/\D/g,'');
+      chrome.runtime.sendMessage(phone);
+    }
+}
+
 window.onload = function() {
   var numberElement = document.getElementById('current-number');
   if (numberElement) { // make sure they have a phone number
     var phoneLink = numberElement.firstElementChild;
     var formattedPhone = phoneLink.innerText;
-    var phone = formattedPhone.replace(/\D/g,'');
 
     phoneLink.addEventListener('click', (event) => {
       event.preventDefault();
-      chrome.runtime.sendMessage(phone);
+      confirmDial(formattedPhone);
     });
   }
 
   chrome.runtime.sendMessage('getAskToCall', function(askToCall) {
     if (askToCall && numberElement) {
-      var dial = confirm('Dial ' + formattedPhone + '?');
-      if (dial) {
-        chrome.runtime.sendMessage(phone);
-      }
+      confirmDial(formattedPhone);
     }
   });
 
@@ -39,7 +43,7 @@ window.onload = function() {
       return;
     }
     if (keyName === 'c' && numberElement) {
-      chrome.runtime.sendMessage(phone);
+      confirmDial(formattedPhone);
       return;
     }
 
