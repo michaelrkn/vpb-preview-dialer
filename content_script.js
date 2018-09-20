@@ -1,5 +1,5 @@
-function confirmDial(formattedPhone) {
-  var dial = confirm('Dial ' + formattedPhone + '?');
+function confirmCall(formattedPhone) {
+  var dial = confirm('Call ' + formattedPhone + '?');
     if (dial) {
       var phone = formattedPhone.replace(/\D/g,'');
       chrome.runtime.sendMessage(phone);
@@ -14,13 +14,13 @@ window.onload = function() {
 
     phoneLink.addEventListener('click', (event) => {
       event.preventDefault();
-      confirmDial(formattedPhone);
+      confirmCall(formattedPhone);
     });
   }
 
-  chrome.runtime.sendMessage('getAskToCall', function(askToCall) {
-    if (askToCall && numberElement) {
-      confirmDial(formattedPhone);
+  chrome.runtime.sendMessage('getCallOnLoad', function(callOnLoad) {
+    if (callOnLoad && numberElement) {
+      confirmCall(formattedPhone);
     }
   });
 
@@ -43,7 +43,7 @@ window.onload = function() {
       return;
     }
     if (keyName === 'c' && numberElement) {
-      confirmDial(formattedPhone);
+      confirmCall(formattedPhone);
       return;
     }
 
