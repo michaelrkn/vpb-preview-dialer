@@ -9,8 +9,8 @@
         padding-bottom: 7.5rem;
         padding-top: 7.5rem;
       }
-      .container {
-        max-width: 80rem;
+      .intro {
+        text-align: center;
       }
       .label-inline {
         font-weight: 300;
@@ -25,56 +25,73 @@
   </head>
   <body>
     <div class="container">
-      <h1>Virtual Phone Bank Preview Dialer</h1>
-      <p>
-        Thanks for using the Virtual Phone Bank Preview Dialer!
-      </p>
-      <p>
-        You can access this page at any time by clicking the "V" icon next to your address bar and choosing "Options".
-      </p>
-      <p>
-        Please give permission to use your microphone,
-        so that you can make calls through the browser on Virtual Phone Bank.
-      </p>
-
-      <h2>Options</h2>
-      <p>
-        Below, enter the phone number you'd like to use for the outgoing caller ID below.
-        If it's not already in our system, we'll call you to verify it.
-      </p>
-      <form id="verify-phone">
-        <input type="text" id="number">
-        <input type="submit" id="submit">
-      </form>
-      <p>
-        Uncheck the box below if you'd like to disable the pop-up that asks you if you'd like to call the number.
-        You'll still be able to make calls by pressing "c" or clicking the phone number.
-      </p>
-      <div>
-        <input type="checkbox" id="callOnLoad" checked>
-        <label class="label-inline" for="callOnLoad">Ask to call when each new contact loads.</label>
+      <div class="intro">
+        <h1>Virtual Phone Bank Preview Dialer</h1>
+        <p>
+          Thanks for using the Virtual Phone Bank Preview Dialer!
+        </p>
+        <p>
+          You can access this page at any time by clicking the "V" icon next to your address bar and choosing "Options".
+        </p>
       </div>
+      <div class="row">
+        <div class="column">
+          <h2>Setup</h2>
+          <p>
+            Please give permission to use your microphone,
+            so that you can make calls through the browser on Virtual Phone Bank.
+          </p>
+          <p>Enter the information below from your campaign, so we know which account to use:</p>
+          <form id="campaign-setup">
+            <label for="campaign-code">Campaign code</label>
+            <input type="text" id="campaign-code">
+            <label for="access-code">Access code</label>
+            <input type="text" id="access-code">
+            <input type="submit" value="Save">
+          </form>
 
-      <h2>Keyboard Commands</h2>
-      <p>When you are on the phone, you can press "h" to hang up.</p>
-      <p>
-        If you don't make a call at first, you can make it later by pressing "c",
-        or by clicking the phone number.
-      </p>
-      <p>For "Couldn't Reach" statuses, press:</p>
-      <ul>
-        <li>n: Not Home</li>
-        <li>r: Refused</li>
-        <li>m: Moved</li>
-        <li>b: Busy</li>
-        <li>w: Wrong Number</li>
-        <li>d: Disconnected</li>
-        <li>l: Other Language</li>
-      </ul>
-      <p>You don't need to click "I Couldn't Reach..." - just press the button.</p>
-      <p>You can also press "s" to open the Scheduler, and "o" to go to Notes (if available).</p>
-      <p>Then, press Enter for "Save & Next Call".</p>
-      <p>Or, press "s" for "Skip" (if available).</p>
+          <h2>Options</h2>
+          <p>
+            Below, enter the phone number you'd like to use for the outgoing caller ID below.
+            If it's not already in our system, we'll call you to verify it.
+          </p>
+          <form id="verify-phone">
+            <label for="number">Phone number</label>
+            <input type="text" id="number">
+            <input type="submit" value="Set caller ID">
+          </form>
+          <p>
+            Uncheck the box below if you'd like to disable the pop-up that asks you if you'd like to call the number.
+            You'll still be able to make calls by pressing "c" or clicking the phone number.
+          </p>
+          <div>
+            <input type="checkbox" id="callOnLoad" checked>
+            <label class="label-inline" for="callOnLoad">Ask to call when each new contact loads.</label>
+          </div>
+        </div>
+        <div class="column">
+          <h2>Keyboard Commands</h2>
+          <p>When you are on the phone, you can press "h" to hang up.</p>
+          <p>
+            If you don't make a call at first, you can make it later by pressing "c",
+            or by clicking the phone number.
+          </p>
+          <p>For "Couldn't Reach" statuses, press:</p>
+          <ul>
+            <li>n: Not Home</li>
+            <li>r: Refused</li>
+            <li>m: Moved</li>
+            <li>b: Busy</li>
+            <li>w: Wrong Number</li>
+            <li>d: Disconnected</li>
+            <li>l: Other Language</li>
+          </ul>
+          <p>You don't need to click "I Couldn't Reach..." - just press the button.</p>
+          <p>You can also press "s" to open the Scheduler, and "o" to go to Notes (if available).</p>
+          <p>Then, press Enter for "Save & Next Call".</p>
+          <p>Or, press "s" for "Skip" (if available).</p>
+        </div>
+      </div>
     </main>
     <script type="text/javascript" src="https://media.twiliocdn.com/sdk/js/client/v1.5/twilio.min.js"></script>
     <script type="text/javascript" src="options.js"></script>
