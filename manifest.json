@@ -10,8 +10,12 @@
   },
   "content_scripts": [
     {
+      "matches": ["https://van.statevoices.org/VirtualPhoneBankRun.aspx?VirtualPhoneBankListID=*", "https://www.votebuilder.com/VirtualPhoneBankRun.aspx?VirtualPhoneBankListID="],
+      "js": ["instructions.js"]
+    },
+    {
       "matches": ["https://van.statevoices.org/ContactDetailScript.aspx*", "https://www.votebuilder.com/ContactDetailScript.aspx*"],
-      "js": ["content_script.js"]
+      "js": ["controls.js"]
     }
   ]
 }
