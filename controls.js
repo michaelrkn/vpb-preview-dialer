@@ -31,7 +31,7 @@ window.onload = function() {
   });
 
   document.addEventListener('keypress', (event) => {
-    if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
       return;
     }
 
@@ -39,7 +39,7 @@ window.onload = function() {
 
     var keyName = event.key;
     if (keyName === 'h') {
-      chrome.runtime.sendMessage("hangup");
+      chrome.runtime.sendMessage('hangup');
       return;
     }
     if (keyName === 'c' && numberElement) {
@@ -61,7 +61,7 @@ window.onload = function() {
       } else {
         nextNumber.click();
       }
-      chrome.runtime.sendMessage("hangup");
+      chrome.runtime.sendMessage('hangup');
       return;
     }
 
@@ -69,7 +69,7 @@ window.onload = function() {
       var next = document.querySelectorAll('input[value="Skip"]')[0];
       if (next) {
         next.click();
-        chrome.runtime.sendMessage("hangup");
+        chrome.runtime.sendMessage('hangup');
       }
       return;
     }

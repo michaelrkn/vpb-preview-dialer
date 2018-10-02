@@ -1,8 +1,8 @@
 chrome.runtime.onInstalled.addListener((details) => {
-  if (details.reason === "install") {
+  if (details.reason === 'install') {
     localStorage.setItem('callOnLoad', true);
     chrome.tabs.create({
-      url: chrome.extension.getURL("options.html"),
+      url: chrome.extension.getURL('options.html'),
       active: true
     });
   }
@@ -15,7 +15,7 @@ chrome.runtime.onStartup.addListener((details) => {
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   if (message === 'getCallOnLoad') {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
-  } else if (message === "hangup") {
+  } else if (message === 'hangup') {
     hangup();
   } else if (message === 'getToken') {
     getToken();
