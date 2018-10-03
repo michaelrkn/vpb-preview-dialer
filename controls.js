@@ -53,13 +53,11 @@ window.onload = function() {
     }
     if (keyName === 'c' && numberElement) {
       confirmCall(formattedPhone);
-      return;
     }
 
     if (keyName === 'o') {
       var next = document.querySelectorAll('textarea')[0];
       next.focus();
-      return;
     }
 
     if (keyName === 'Enter') {
@@ -72,7 +70,6 @@ window.onload = function() {
         next.click();
         chrome.runtime.sendMessage('hangup');
       }
-      return;
     }
 
     if (keyName === 'e') {
@@ -80,7 +77,6 @@ window.onload = function() {
       if (next) {
         next.click();
       }
-      return;
     }
 
     var status = {
