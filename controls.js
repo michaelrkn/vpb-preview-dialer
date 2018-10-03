@@ -6,6 +6,17 @@ function confirmCall(formattedPhone) {
     }
 }
 
+function next() {
+  var nextContact = document.querySelectorAll('input[value="Save & Next Call"]')[0];
+  var nextNumber = document.querySelectorAll('input[value*="Try Number"]')[0];
+  if (!nextContact.classList.contains('ng-hide')) {
+    nextContact.click();
+  } else {
+    nextNumber.click();
+  }
+  chrome.runtime.sendMessage('hangup');
+}
+
 window.onload = function() {
   var numberElement = document.getElementById('current-number');
   if (numberElement) { // make sure they have a phone number
@@ -97,15 +108,4 @@ window.onload = function() {
       element.click();
     }
   });
-}
-
-function next() {
-  var nextContact = document.querySelectorAll('input[value="Save & Next Call"]')[0];
-  var nextNumber = document.querySelectorAll('input[value*="Try Number"]')[0];
-  if (!nextContact.classList.contains('ng-hide')) {
-    nextContact.click();
-  } else {
-    nextNumber.click();
-  }
-  chrome.runtime.sendMessage('hangup');
 }
