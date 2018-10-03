@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 });
 
 chrome.runtime.onStartup.addListener((details) => {
-  getToken();
+  setupConnection();
 });
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
@@ -18,14 +18,14 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
   } else if (message === 'hangup') {
     hangup();
-  } else if (message === 'getToken') {
-    getToken();
+  } else if (message === 'setupConnection') {
+    setupConnection();
   } else {
     call(message, tab);
   }
 });
 
-function getToken() {
+function setupConnection() {
   var campaignCode = localStorage.getItem('campaignCode');
   var accessCode = localStorage.getItem('accessCode');
 
@@ -49,7 +49,7 @@ function call(number, tab) {
 
 function checkConnection() {
   if (Twilio.Device.status() === 'offline') {
-    return getToken();
+    return setupConnection();
   } else {
     return Promise.resolve();
   }

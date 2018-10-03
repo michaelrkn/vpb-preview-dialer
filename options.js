@@ -20,7 +20,7 @@ window.onload = function() {
       alert('You\'re all set up! Make sure to read the keyboard commands on the right, and review the options below.');
       localStorage.setItem('campaignCode', campaignCode);
       localStorage.setItem('accessCode', accessCode);
-      chrome.runtime.sendMessage('getToken');
+      chrome.runtime.sendMessage('setupConnection');
     })
     .catch(function(response) {
       alert('Sorry, the campaign or access code you entered was incorrect.');
