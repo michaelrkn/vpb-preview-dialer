@@ -13,6 +13,7 @@ chrome.runtime.onStartup.addListener((details) => {
 });
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  var tab = sender.tab.id;
   if (message === 'getCallOnLoad') {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
   } else if (message === 'hangup') {
@@ -20,7 +21,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   } else if (message === 'getToken') {
     getToken();
   } else {
-    checkConnection().then(() => { dial(message) });
+    call(message, tab);
   }
 });
 
@@ -33,7 +34,16 @@ function getToken() {
     return response.json();
   })
   .then(function(json) {
-    Twilio.Device.setup(json.token);
+    var device = Twilio.Device.setup(json.token, {
+      enableRingingState: true
+    });
+  });
+}
+
+function call(number, tab) {
+  checkConnection().then(() => {
+    var connection = dial(number);
+    handleUnanswered(connection, tab);
   });
 }
 
@@ -50,9 +60,21 @@ function dial(number) {
     To: number,
     From: localStorage.getItem('outgoingCallerID')
   };
-  Twilio.Device.connect(params);
+  return Twilio.Device.connect(params);
 }
 
 function hangup() {
   Twilio.Device.disconnectAll();
+}
+
+function handleUnanswered(connection, tab) {
+  var answered = false;
+  connection.on('accept', function() {
+    answered = true;
+  });
+  connection.on('disconnect', function() {
+    if (!answered) {
+      chrome.tabs.sendMessage(tab, 'unanswered');
+    }
+  });
 }

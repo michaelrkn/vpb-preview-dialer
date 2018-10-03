@@ -30,6 +30,15 @@ window.onload = function() {
     reached = !reached;
   });
 
+  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if (message === 'unanswered') {
+      if (reached) { switchButton.click(); }
+      var element = document.querySelectorAll('input[name="resultCodeId"][value="1"]')[0];
+      element.click();
+      next();
+    }
+  });
+
   document.addEventListener('keypress', (event) => {
     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
       return;
@@ -54,15 +63,7 @@ window.onload = function() {
     }
 
     if (keyName === 'Enter') {
-      var nextContact = document.querySelectorAll('input[value="Save & Next Call"]')[0];
-      var nextNumber = document.querySelectorAll('input[value*="Try Number"]')[0];
-      if (!nextContact.classList.contains('ng-hide')) {
-        nextContact.click();
-      } else {
-        nextNumber.click();
-      }
-      chrome.runtime.sendMessage('hangup');
-      return;
+      next();
     }
 
     if (keyName === 's') {
@@ -100,4 +101,15 @@ window.onload = function() {
       element.click();
     }
   });
+}
+
+function next() {
+  var nextContact = document.querySelectorAll('input[value="Save & Next Call"]')[0];
+  var nextNumber = document.querySelectorAll('input[value*="Try Number"]')[0];
+  if (!nextContact.classList.contains('ng-hide')) {
+    nextContact.click();
+  } else {
+    nextNumber.click();
+  }
+  chrome.runtime.sendMessage('hangup');
 }
