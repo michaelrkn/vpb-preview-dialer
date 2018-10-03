@@ -76,17 +76,17 @@ window.onload = function() {
     }
 
     if (keyName === 's') {
-      var next = document.querySelectorAll('input[value="Skip"]')[0];
-      if (next) {
-        next.click();
+      var skip = document.querySelectorAll('input[value="Skip"]')[0];
+      if (skip) {
+        skip.click();
         chrome.runtime.sendMessage('hangup');
       }
     }
 
     if (keyName === 'e') {
-      var next = document.querySelectorAll('input[value="Schedule For Events"]')[0];
-      if (next) {
-        next.click();
+      var schedule = document.querySelectorAll('input[value="Schedule For Events"]')[0];
+      if (schedule) {
+        schedule.click();
       }
     }
 
