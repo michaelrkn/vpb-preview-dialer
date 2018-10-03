@@ -37,6 +37,7 @@ function setupConnection() {
     var device = Twilio.Device.setup(json.token, {
       enableRingingState: true
     });
+    device.audio.outgoing(false);
   });
 }
 
