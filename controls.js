@@ -6,7 +6,7 @@ function confirmCall(formattedPhone) {
     }
 }
 
-function next() {
+function goToNextContact() {
   var nextContact = document.querySelectorAll('input[value="Save & Next Call"]')[0];
   var nextNumber = document.querySelectorAll('input[value*="Try Number"]')[0];
   if (!nextContact.classList.contains('ng-hide')) {
@@ -46,7 +46,7 @@ window.onload = () => {
       if (reached) { switchButton.click(); }
       var element = document.querySelectorAll('input[name="resultCodeId"][value="1"]')[0];
       element.click();
-      next();
+      goToNextContact();
     }
   });
 
@@ -72,7 +72,7 @@ window.onload = () => {
     }
 
     if (keyName === 'Enter') {
-      next();
+      goToNextContact();
     }
 
     if (keyName === 's') {
