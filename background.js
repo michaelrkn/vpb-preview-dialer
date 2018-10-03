@@ -12,7 +12,7 @@ chrome.runtime.onStartup.addListener((details) => {
   setupConnection();
 });
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   var tab = sender.tab.id;
   if (message === 'getCallOnLoad') {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
@@ -30,10 +30,10 @@ function setupConnection() {
   var accessCode = localStorage.getItem('accessCode');
 
   return fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
-  .then(function(response) {
+  .then((response) => {
     return response.json();
   })
-  .then(function(json) {
+  .then((json) => {
     var device = Twilio.Device.setup(json.token, {
       enableRingingState: true
     });
@@ -69,10 +69,10 @@ function hangup() {
 
 function handleUnanswered(connection, tab) {
   var answered = false;
-  connection.on('accept', function() {
+  connection.on('accept', () => {
     answered = true;
   });
-  connection.on('disconnect', function() {
+  connection.on('disconnect', () => {
     if (!answered) {
       chrome.tabs.sendMessage(tab, 'unanswered');
     }

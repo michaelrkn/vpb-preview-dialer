@@ -17,7 +17,7 @@ function next() {
   chrome.runtime.sendMessage('hangup');
 }
 
-window.onload = function() {
+window.onload = () => {
   var numberElement = document.getElementById('current-number');
   if (numberElement) { // make sure they have a phone number
     var phoneLink = numberElement.firstElementChild;
@@ -29,7 +29,7 @@ window.onload = function() {
     });
   }
 
-  chrome.runtime.sendMessage('getCallOnLoad', function(callOnLoad) {
+  chrome.runtime.sendMessage('getCallOnLoad', (callOnLoad) => {
     if (callOnLoad && numberElement) {
       confirmCall(formattedPhone);
     }
@@ -37,11 +37,11 @@ window.onload = function() {
 
   var reached = true;
   var switchButton = document.getElementById('switch');
-  switchButton.addEventListener('click', function(event) {
+  switchButton.addEventListener('click', (event) => {
     reached = !reached;
   });
 
-  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === 'unanswered') {
       if (reached) { switchButton.click(); }
       var element = document.querySelectorAll('input[name="resultCodeId"][value="1"]')[0];
