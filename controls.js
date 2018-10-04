@@ -24,7 +24,7 @@ window.addEventListener("beforeunload", (event) => {
   hangup();
 });
 
-window.onload = () => {
+window.addEventListener("load", (event) => {
   var numberElement = document.getElementById('current-number');
   if (numberElement) { // make sure they have a phone number
     var phoneLink = numberElement.firstElementChild;
@@ -110,4 +110,4 @@ window.onload = () => {
       element.click();
     }
   });
-}
+});
