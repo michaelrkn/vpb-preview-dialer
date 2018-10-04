@@ -44,6 +44,8 @@ function setupConnection() {
 function call(number, tab) {
   checkConnection().then(() => {
     var connection = dial(number);
+    var audio = new Audio('https://media.twiliocdn.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
+    audio.play();
     handleUnanswered(connection, tab);
   });
 }
