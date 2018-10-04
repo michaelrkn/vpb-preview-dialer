@@ -1,4 +1,4 @@
-window.onload = function() {
+window.addEventListener("load", (event) => {
   this.alert(`Welcome to the Virtual Phone Bank Preview Dialer!
 
 When a contact loads, you'll be asked if you want to call them.
@@ -21,4 +21,4 @@ For "Couldn't Reach" statuses, press:
 You don't need to click "I Couldn't Reach..." - just press the key.
 
 You can also press "s" to open the Scheduler, and "o" to go to Notes (if available).`)
-};
+});
