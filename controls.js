@@ -6,6 +6,10 @@ function confirmCall(formattedPhone) {
     }
 }
 
+function hangup() {
+  chrome.runtime.sendMessage('hangup');
+}
+
 function goToNextContact() {
   var nextContact = document.querySelectorAll('input[value="Save & Next Call"]')[0];
   var nextNumber = document.querySelectorAll('input[value*="Try Number"]')[0];
@@ -14,8 +18,11 @@ function goToNextContact() {
   } else {
     nextNumber.click();
   }
-  chrome.runtime.sendMessage('hangup');
 }
+
+window.addEventListener("beforeunload", (event) => {
+  hangup();
+});
 
 window.onload = () => {
   var numberElement = document.getElementById('current-number');
@@ -64,13 +71,12 @@ window.onload = () => {
     }
 
     if (keyName === 'c' && numberElement) { confirmCall(formattedPhone); }
-    if (keyName === 'h') { chrome.runtime.sendMessage('hangup'); }
+    if (keyName === 'h') { hangup(); }
 
     if (keyName === 's') {
       var skip = document.querySelectorAll('input[value="Skip"]')[0];
       if (skip) {
         skip.click();
-        chrome.runtime.sendMessage('hangup');
       }
     }
     if (keyName === 'o') {
