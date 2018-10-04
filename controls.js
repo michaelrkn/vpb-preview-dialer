@@ -2,12 +2,12 @@ function confirmCall(formattedPhone) {
   var dial = confirm('Call ' + formattedPhone + '?');
     if (dial) {
       var phone = formattedPhone.replace(/\D/g,'');
-      chrome.runtime.sendMessage(phone);
+      chrome.runtime.sendMessage({ dial: phone });
     }
 }
 
 function hangup() {
-  chrome.runtime.sendMessage('hangup');
+  chrome.runtime.sendMessage({ hangup: true });
 }
 
 function goToNextContact() {
@@ -36,7 +36,7 @@ window.addEventListener("load", (event) => {
     });
   }
 
-  chrome.runtime.sendMessage('getCallOnLoad', (callOnLoad) => {
+  chrome.runtime.sendMessage({ getCallOnLoad: true }, (callOnLoad) => {
     if (callOnLoad && numberElement) {
       confirmCall(formattedPhone);
     }

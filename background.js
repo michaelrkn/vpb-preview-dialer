@@ -14,16 +14,16 @@ chrome.runtime.onStartup.addListener((details) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   var tab = sender.tab.id;
-  if (message === 'getCallOnLoad') {
+  if (message.getCallOnLoad) {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
-  } else if (message === 'hangup') {
+  } else if (message.hangup) {
     hangup();
-  } else if (message === 'setupConnection') {
+  } else if (message.setupConnection) {
     setupConnection();
   } else if (message.sendDigit) {
     sendDigit(message.sendDigit);
-  } else {
-    call(message, tab);
+  } else if (message.dial) {
+    call(message.dial, tab);
   }
 });
 
