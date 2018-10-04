@@ -67,8 +67,10 @@ window.onload = () => {
     }
 
     if (keyName === 'o') {
-      var next = document.querySelectorAll('textarea')[0];
-      next.focus();
+      var textarea = document.querySelectorAll('textarea')[0];
+      if (textarea) {
+        textarea.focus();
+      }
     }
 
     if (keyName === 'Enter') {
