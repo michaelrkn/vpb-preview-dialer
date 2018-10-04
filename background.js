@@ -69,7 +69,10 @@ function dial(number) {
 }
 
 function hangup() {
-  Twilio.Device.disconnectAll();
+  var connection = Twilio.Device.activeConnection();
+  if (connection) {
+    connection.disconnect();
+  }
 }
 
 function handleUnanswered(connection, tab) {
