@@ -58,24 +58,13 @@ window.onload = () => {
     event.preventDefault();
 
     var keyName = event.key;
-    if (keyName === 'h') {
-      chrome.runtime.sendMessage('hangup');
-    }
-
-    if (keyName === 'c' && numberElement) {
-      confirmCall(formattedPhone);
-    }
-
-    if (keyName === 'o') {
-      var textarea = document.querySelectorAll('textarea')[0];
-      if (textarea) {
-        textarea.focus();
-      }
-    }
 
     if (keyName === 'Enter') {
       goToNextContact();
     }
+
+    if (keyName === 'c' && numberElement) { confirmCall(formattedPhone); }
+    if (keyName === 'h') { chrome.runtime.sendMessage('hangup'); }
 
     if (keyName === 's') {
       var skip = document.querySelectorAll('input[value="Skip"]')[0];
@@ -84,7 +73,12 @@ window.onload = () => {
         chrome.runtime.sendMessage('hangup');
       }
     }
-
+    if (keyName === 'o') {
+      var textarea = document.querySelectorAll('textarea')[0];
+      if (textarea) {
+        textarea.focus();
+      }
+    }
     if (keyName === 'e') {
       var schedule = document.querySelectorAll('input[value="Schedule For Events"]')[0];
       if (schedule) {
