@@ -109,5 +109,9 @@ window.addEventListener("load", (event) => {
       var element = document.querySelectorAll('input[name="resultCodeId"][value="' + status + '"]')[0];
       element.click();
     }
+
+    if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '#'].includes(keyName)) {
+      chrome.runtime.sendMessage({ sendDigit: keyName });
+    }
   });
 });

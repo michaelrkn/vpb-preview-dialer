@@ -20,6 +20,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     hangup();
   } else if (message === 'setupConnection') {
     setupConnection();
+  } else if (message.sendDigit) {
+    sendDigit(message.sendDigit);
   } else {
     call(message, tab);
   }
@@ -80,4 +82,9 @@ function handleUnanswered(connection, tab) {
       chrome.tabs.sendMessage(tab, 'unanswered');
     }
   });
+}
+
+function sendDigit(digit) {
+  var connection = Twilio.Device.activeConnection();
+  connection.sendDigits(digit);
 }
