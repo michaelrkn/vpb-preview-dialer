@@ -60,8 +60,8 @@ window.onload = () => {
     var keyName = event.key;
     if (keyName === 'h') {
       chrome.runtime.sendMessage('hangup');
-      return;
     }
+
     if (keyName === 'c' && numberElement) {
       confirmCall(formattedPhone);
     }
