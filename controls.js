@@ -26,7 +26,7 @@ window.addEventListener("beforeunload", (event) => {
 
 window.addEventListener("load", (event) => {
   var numberElement = document.getElementById('current-number');
-  if (numberElement) { // make sure they have a phone number
+  if (numberElement) {
     var phoneLink = numberElement.firstElementChild;
     var formattedPhone = phoneLink.innerText;
 
