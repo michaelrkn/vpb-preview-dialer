@@ -86,5 +86,7 @@ function handleUnanswered(connection, tab) {
 
 function sendDigit(digit) {
   var connection = Twilio.Device.activeConnection();
-  connection.sendDigits(digit);
+  if (connection) {
+    connection.sendDigits(digit);
+  }
 }
