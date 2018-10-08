@@ -71,6 +71,7 @@ function dial(number) {
 function hangup() {
   var connection = Twilio.Device.activeConnection();
   if (connection) {
+    connection.removeAllListeners('disconnect'); // do nothing; overwrites handleUnanswered()
     connection.disconnect();
   }
 }
