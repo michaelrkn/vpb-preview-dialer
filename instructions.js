@@ -7,7 +7,7 @@ The audio will come through your browser.
 
 When you are on the phone, you can press "h" to hang up.
 Then, press "Enter" for "Save & Next Call".
-Or, press "s" for "Skip" (if available).
+Or, press "s" for "Skip" (if available). [Scroll for more instructions!]
 
 For "Couldn't Reach" statuses, press:
   n: Not Home
