@@ -46,9 +46,14 @@ function setupConnection() {
 function call(number, tab) {
   checkConnection().then(() => {
     var connection = dial(number);
+    connection.answered = false;
+    connection.tab = tab;
+
+    connection.on('accept', () => { connection.answered = true; });
+    connection.on('disconnect', handleDisconnect);
+
     var audio = new Audio('https://media.twiliocdn.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
     audio.play();
-    handleUnanswered(connection, tab);
   });
 }
 
@@ -71,21 +76,15 @@ function dial(number) {
 function hangup() {
   var connection = Twilio.Device.activeConnection();
   if (connection) {
-    connection.removeAllListeners('disconnect'); // do nothing; overwrites handleUnanswered()
+    connection.removeListener('disconnect', handleDisconnect);
     connection.disconnect();
   }
 }
 
-function handleUnanswered(connection, tab) {
-  var answered = false;
-  connection.on('accept', () => {
-    answered = true;
-  });
-  connection.on('disconnect', () => {
-    if (!answered) {
-      chrome.tabs.sendMessage(tab, 'unanswered');
-    }
-  });
+function handleDisconnect(connection) {
+  if (!connection.answered) {
+    chrome.tabs.sendMessage(connection.tab, 'unanswered');
+  }
 }
 
 function sendDigit(digit) {
