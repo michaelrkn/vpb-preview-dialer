@@ -1,5 +1,5 @@
 function confirmCall(formattedPhone) {
-  var dial = confirm('Call ' + formattedPhone + '?');
+  var dial = confirm('Call ' + formattedPhone + '? Press Enter or click OK to call.');
     if (dial) {
       var phone = formattedPhone.replace(/\D/g,'');
       chrome.runtime.sendMessage({ dial: phone });
