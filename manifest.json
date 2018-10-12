@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "VPB Preview Dialer",
   "description": "Turns Virtual Phone Bank into a preview dialer.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "content_security_policy": "script-src 'self' https://media.twiliocdn.com; object-src 'self'",
   "options_page": "options.html",
   "background": {
