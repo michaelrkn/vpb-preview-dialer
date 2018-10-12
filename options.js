@@ -9,8 +9,8 @@ window.onload = () => {
   var setupForm = document.getElementById('campaign-setup');
   setupForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    var campaignCode = document.getElementById('campaign-code').value;
-    var accessCode = document.getElementById('access-code').value;
+    var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
+    var accessCode = document.getElementById('access-code').value.replace(" ", "");
 
     fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
     .then((response) => {
