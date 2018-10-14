@@ -15,7 +15,7 @@
     },
     {
       "matches": ["https://van.statevoices.org/ContactDetailScript.aspx*", "https://www.votebuilder.com/ContactDetailScript.aspx*"],
-      "js": ["controls.js"]
+      "js": ["van-controls.js"]
     }
   ]
 }
