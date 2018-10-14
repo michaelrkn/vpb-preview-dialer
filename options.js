@@ -17,7 +17,7 @@ window.onload = () => {
       return response.json();
     })
     .then((json) => {
-      alert('You\'re all set up! Make sure to read the keyboard commands on the right, and review the options below.');
+      alert('You\'re all set up! Make sure to set your caller ID before calling.');
       localStorage.setItem('campaignCode', campaignCode);
       localStorage.setItem('accessCode', accessCode);
       chrome.runtime.sendMessage({ setupConnection: true });
