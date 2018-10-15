@@ -23,9 +23,7 @@ function nextButton() {
 }
 
 function insertsContactData(mutations) {
-  if (mutations[1] && mutations[1].addedNodes && mutations[1].addedNodes[0].childNodes[1]) {
-    return mutations[1].addedNodes[0].childNodes[1].className === 'call-info';
-  }
+  return mutations.length > 20;
 }
 
 function notHomeSelection() {
