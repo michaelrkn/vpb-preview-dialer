@@ -6,6 +6,10 @@ function confirmCall(formattedPhone) {
     }
 }
 
+function hangup() {
+  chrome.runtime.sendMessage({ hangup: true });
+}
+
 function phoneNumberFormatted() {
   return phoneElement().innerText;
 }
@@ -14,11 +18,31 @@ function phoneElement() {
   return document.getElementById('phone-voter');
 }
 
+function nextButton() {
+  return document.getElementById('btnSave');
+}
+
 function insertsContactData(mutations) {
   if (mutations[1] && mutations[1].addedNodes && mutations[1].addedNodes[0].childNodes[1]) {
     return mutations[1].addedNodes[0].childNodes[1].className === 'call-info';
   }
 }
+
+function notHomeSelection() {
+  return document.querySelector('input[value="Not Home"]');
+}
+
+function goToNextContact() {
+  hangup();
+  nextButton().click();
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message === 'unanswered') {
+    notHomeSelection().click();
+    goToNextContact();
+  }
+});
 
 var observer = new MutationObserver(function(mutations) {
   if (insertsContactData(mutations)) {
