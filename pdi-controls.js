@@ -30,6 +30,10 @@ function notHomeSelection() {
   return document.querySelector('input[value="Not Home"]');
 }
 
+function skipButton() {
+  return document.getElementById('btnSkip');
+}
+
 function goToNextContact() {
   hangup();
   nextButton().click();
@@ -58,3 +62,28 @@ var observer = new MutationObserver(function(mutations) {
 });
 
 observer.observe(document, { attributes: false, childList: true, characterData: false, subtree: true });
+
+document.addEventListener('keypress', (event) => {
+  if (document.activeElement.tagName === 'TEXTAREA') {
+    return;
+  }
+
+  event.preventDefault();
+
+  var keyName = event.key;
+
+  if (keyName === 'Enter') { goToNextContact(); }
+  if (keyName === 'c') { confirmCall(phoneNumberFormatted()); }
+  if (keyName === 'h') { hangup(); }
+
+  if (keyName === 's') {
+    var skip = skipButton();
+    if (skip) {
+      skip.click();
+    }
+  }
+
+  if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '#'].includes(keyName)) {
+    chrome.runtime.sendMessage({ sendDigit: keyName });
+  }
+});
