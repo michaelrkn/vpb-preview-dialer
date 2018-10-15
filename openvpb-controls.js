@@ -49,6 +49,55 @@ var observer = new MutationObserver(function(mutations) {
         confirmCall(formattedPhone);
       }
     });
+
+    document.addEventListener('keypress', (event) => {
+      if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      event.preventDefault();
+
+      var keyName = event.key;
+
+      if (keyName === 'Enter') { goToNextContact(); }
+      if (keyName === 'c' && phoneLink) { confirmCall(formattedPhone); }
+      if (keyName === 'h') { hangup(); }
+
+      if (keyName === 's') {
+        var skip = document.querySelectorAll('.script-footer.panel-buttons .btn.btn-gray')[1];
+        if (skip) {
+          skip.click();
+        }
+      }
+      if (keyName === 'o') {
+        var textarea = document.querySelectorAll('textarea')[0];
+        if (textarea) {
+          textarea.focus();
+        }
+      }
+
+      var status = {
+        n: 1,
+        r: 2,
+        m: 5,
+        b: 18,
+        w: 20,
+        d: 25,
+        l: 31
+      }[keyName];
+
+      if (status) {
+        if (!notHomeSelection()) {
+          document.querySelector('.contact-toggle').click();
+        }
+        var element = document.getElementById('result-' + status);
+        element.click();
+      }
+
+      if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '#'].includes(keyName)) {
+        chrome.runtime.sendMessage({ sendDigit: keyName });
+      }
+    });
   }
 });
 
