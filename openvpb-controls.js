@@ -6,6 +6,16 @@ function confirmCall(formattedPhone) {
     }
 }
 
+function hangup() {
+  chrome.runtime.sendMessage({ hangup: true });
+}
+
+function goToNextContact() {
+  hangup();
+  var nextContact = document.querySelector('.panel-buttons.left button.btn.btn-blue');
+  nextContact.click();
+}
+
 function insertsContactData(mutations) {
   if (mutations[2]) {
     return mutations[2].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
@@ -20,7 +30,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message === 'unanswered') {
     if (!notHomeSelection()) { document.querySelector('.contact-toggle').click(); }
     notHomeSelection().click();
-    alert('not home!');
+    goToNextContact();
   }
 });
 
