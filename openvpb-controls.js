@@ -6,9 +6,27 @@ function confirmCall(formattedPhone) {
     }
 }
 
+function insertsContactData(mutations) {
+  if (mutations[2]) {
+    return mutations[2].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+  }
+}
+
+function notHomeSelection() {
+  return document.getElementById('result-1');
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message === 'unanswered') {
+    if (!notHomeSelection()) { document.querySelector('.contact-toggle').click(); }
+    notHomeSelection().click();
+    alert('not home!');
+  }
+});
+
 var observer = new MutationObserver(function(mutations) {
-  var phoneLink = document.querySelector('a[href*="tel:"]');
-  if (document.contains(phoneLink)) {
+  if (insertsContactData(mutations)) {
+    var phoneLink = document.querySelector('a[href*="tel:"]');
     var formattedPhone = phoneLink.href.replace("tel:","");
 
     phoneLink.addEventListener('click', (event) => {
