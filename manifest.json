@@ -15,15 +15,15 @@
     },
     {
       "matches": ["https://van.statevoices.org/ContactDetailScript.aspx*", "https://www.votebuilder.com/ContactDetailScript.aspx*"],
-      "js": ["van-controls.js"]
+      "js": ["controls-van.js"]
     },
     {
       "matches": ["https://www.openvpb.com/VirtualPhoneBank/LoggedIn/*"],
-      "js": ["openvpb-controls.js"]
+      "js": ["controls-openvpb.js"]
     },
     {
       "matches": ["https://phonebank.bluevote.com/Home/PhoneBank?pt=*"],
-      "js": ["pdi-controls.js"]
+      "js": ["controls-pdi.js"]
     }
   ]
 }
