@@ -64,7 +64,7 @@ var observer = new MutationObserver(function(mutations) {
 observer.observe(document, { attributes: false, childList: true, characterData: false, subtree: true });
 
 document.addEventListener('keypress', (event) => {
-  if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.type === 'text') {
+  if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.type === 'text' || document.activeElement.type === 'password') {
     return;
   }
 
