@@ -45,11 +45,14 @@ window.onload = () => {
       })
       .then((json) => {
         if (json.code === 21450) {
-          alert('Your Caller ID is set.');
+          setCallerID(phone);
         } else {
-          alert('When called, enter ' + json.verificationCode + ' when asked for your verification code.');
+          var verificationCode = json.verificationCode;
+          var checkVerification = confirm('When called, enter ' + verificationCode + ' when asked for your verification code. Click OK after verifying, or Cancel to enter a new number.');
+          if (checkVerification) {
+            checkCallerID(phone, verificationCode, campaignCode);
+          }
         }
-        localStorage.setItem('outgoingCallerID', phone);
       });
     }
   }, false);
@@ -57,4 +60,26 @@ window.onload = () => {
   document.getElementById('callOnLoad').onclick = (event) => {
     localStorage.setItem('callOnLoad', document.getElementById('callOnLoad').checked);
   }
+}
+
+function setCallerID(phone) {
+  alert('Your Caller ID is set.');
+  localStorage.setItem('outgoingCallerID', phone);
+}
+
+function checkCallerID(phone, verificationCode, campaignCode) {
+  fetch('https://' + campaignCode + '.twil.io/check-caller-id?phone=' + phone)
+  .then((response) => {
+    return response.json();
+  })
+  .then((json) => {
+    if (json.verified) {
+      setCallerID(phone);
+    } else {
+      checkAgain = confirm('Your caller ID is not verified. Your code was ' + verificationCode + '. If you clicked OK before entering the code, enter it and click OK to check again. If you did not get a verification call, click Cancel, check the phone number you entered, and try again.');
+      if (checkAgain) {
+        checkCallerID(phone, verificationCode, campaignCode);
+      }
+    }
+  });
 }
