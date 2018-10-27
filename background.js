@@ -68,7 +68,8 @@ function checkConnection() {
 function dial(number) {
   var params = {
     To: number,
-    From: localStorage.getItem('outgoingCallerID')
+    From: localStorage.getItem('outgoingCallerID'),
+    RingUntilVoicemail: JSON.parse(localStorage.getItem('ringUntilVoicemail'))
   };
   return Twilio.Device.connect(params);
 }

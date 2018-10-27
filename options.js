@@ -2,7 +2,8 @@ window.onload = () => {
   document.getElementById('campaign-code').value = this.localStorage.getItem('campaignCode');
   document.getElementById('access-code').value = this.localStorage.getItem('accessCode');
   document.getElementById('number').value = localStorage.getItem('outgoingCallerID');
-  document.getElementById('callOnLoad').checked = localStorage.getItem('callOnLoad');
+  document.getElementById('callOnLoad').checked = JSON.parse(localStorage.getItem('callOnLoad'));
+  document.getElementById('ringUntilVoicemail').checked = JSON.parse(localStorage.getItem('ringUntilVoicemail'));
 
   navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => stream.getTracks()[0].stop()); // get microphone permissions
 
@@ -59,6 +60,10 @@ window.onload = () => {
 
   document.getElementById('callOnLoad').onclick = (event) => {
     localStorage.setItem('callOnLoad', document.getElementById('callOnLoad').checked);
+  }
+
+  document.getElementById('ringUntilVoicemail').onclick = (event) => {
+    localStorage.setItem('ringUntilVoicemail', document.getElementById('ringUntilVoicemail').checked);
   }
 }
 
