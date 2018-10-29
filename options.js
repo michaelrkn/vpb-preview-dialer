@@ -1,3 +1,5 @@
+window.LogRocket && window.LogRocket.init('0bvywm/preview-dialer');
+
 window.onload = () => {
   document.getElementById('campaign-code').value = this.localStorage.getItem('campaignCode');
   document.getElementById('access-code').value = this.localStorage.getItem('accessCode');
