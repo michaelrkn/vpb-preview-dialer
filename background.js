@@ -1,3 +1,5 @@
+window.LogRocket && window.LogRocket.init('0bvywm/preview-dialer');
+
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     localStorage.setItem('callOnLoad', true);
