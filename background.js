@@ -42,29 +42,32 @@ function setupConnection() {
       enableRingingState: true
     });
     device.audio.outgoing(false);
+    return device;
   });
 }
 
 function call(number, tab) {
-  checkConnection().then(() => {
-    var connection = dial(number);
-    connection.answered = false;
-    connection.tab = tab;
-
-    connection.on('accept', () => { connection.answered = true; });
-    connection.on('disconnect', handleDisconnect);
-
-    var audio = new Audio('https://media.twiliocdn.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
-    audio.play();
-  });
+  if (!Twilio.Device.isInitialized || Twilio.Device.status() === 'offline') {
+    setupConnection().then((device) => {
+      device.on('ready', function() {
+        prepareDial(number, tab);
+      });
+    });
+  } else {
+    prepareDial(number, tab);
+  }
 }
 
-function checkConnection() {
-  if (Twilio.Device.status() === 'offline') {
-    return setupConnection();
-  } else {
-    return Promise.resolve();
-  }
+function prepareDial(number, tab) {
+  var connection = dial(number);
+  connection.answered = false;
+  connection.tab = tab;
+
+  connection.on('accept', () => { connection.answered = true; });
+  connection.on('disconnect', handleDisconnect);
+
+  var audio = new Audio('https://media.twiliocdn.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
+  audio.play();
 }
 
 function dial(number) {
