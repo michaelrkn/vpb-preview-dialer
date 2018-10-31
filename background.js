@@ -59,6 +59,7 @@ function call(number, tab) {
 }
 
 function prepareDial(number, tab) {
+  hangup();
   var connection = dial(number);
   connection.answered = false;
   connection.tab = tab;
