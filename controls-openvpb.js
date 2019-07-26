@@ -59,8 +59,6 @@ var observer = new MutationObserver(function(mutations) {
 
       var keyName = event.key;
 
-      if (keyName === 'Enter') { goToNextContact(); }
-      if (keyName === 'c' && phoneLink) { confirmCall(formattedPhone); }
       if (keyName === 'h') { hangup(); }
 
       if (keyName === 's') {
