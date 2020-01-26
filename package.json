@@ -1,0 +1,23 @@
+{
+  "name": "vpn-preview-dialer",
+  "version": "1.0.0",
+  "description": "Chrome extension and supporting scripts for VPB Preview Dialer chrome extension.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ext": "sh scripts/build-extension.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelrkn/vpb-preview-dialer.git"
+  },
+  "author": "Michael Kaiser-Nyman <michaelrkn@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/michaelrkn/vpb-preview-dialer/issues"
+  },
+  "homepage": "https://github.com/michaelrkn/vpb-preview-dialer#readme",
+  "contributors": [
+    "Jake Lambert <jake@onahill.co>"
+  ]
+}
