@@ -19,5 +19,8 @@
   "homepage": "https://github.com/michaelrkn/vpb-preview-dialer#readme",
   "contributors": [
     "Jake Lambert <jake@onahill.co>"
-  ]
+  ],
+  "devDependencies": {
+    "twilio": "^3.39.3"
+  }
 }
