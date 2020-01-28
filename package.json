@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ext": "sh scripts/build-extension.sh",
     "start": "twilio-run",
-    "deploy": "twilio-run deploy --environment=public --no-assets"
+    "deploy": "twilio-run deploy --environment=public --no-assets",
+    "version:ext": "node scripts/update-extension-version.js"
   },
   "engines": {
     "node": "10.17.0"
