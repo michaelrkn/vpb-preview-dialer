@@ -15,7 +15,15 @@ window.onload = () => {
     var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
     var accessCode = document.getElementById('access-code').value.replace(" ", "");
 
-    fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
+    if(!localStorage.getItem('twilioSubdomain')) {
+      const resp = await fetch('https://' + campaignCode + '.twil.io/legacy-update')
+      const payload = resp.json()
+      localStorage.setItem('twilioSubdomain', payload.twilioSubdomain)
+    }
+
+    const twilioSubdomain = localStorage.getItem('twilioSubdomain')
+
+    fetch('https://' + twilioSubdomain + '.twil.io/capability-token?accessCode=' + accessCode)
     .then((response) => {
       return response.json();
     })
@@ -39,10 +47,10 @@ window.onload = () => {
 
     if (phone.length !== 10) {
       alert('Please enter a valid 10-digit phone number.');
-    } else if (!campaignCode) {
+    } else if (!campaignCode && !twilioSubdomain) {
       alert('Set your campaign and access codes before setting your caller ID.')
     } else {
-      fetch('https://' + campaignCode + '.twil.io/verify-caller-id?phone=' + phone)
+      fetch('https://' + twilioSubdomain + '.twil.io/verify-caller-id?phone=' + phone)
       .then((response) => {
         return response.json();
       })
@@ -53,7 +61,7 @@ window.onload = () => {
           var verificationCode = json.verificationCode;
           var checkVerification = confirm('When called, enter ' + verificationCode + ' when asked for your verification code. Click OK after verifying, or Cancel to enter a new number.');
           if (checkVerification) {
-            checkCallerID(phone, verificationCode, campaignCode);
+            checkCallerID(phone, verificationCode, twilioSubdomain);
           }
         }
       });
@@ -74,8 +82,8 @@ function setCallerID(phone) {
   localStorage.setItem('outgoingCallerID', phone);
 }
 
-function checkCallerID(phone, verificationCode, campaignCode) {
-  fetch('https://' + campaignCode + '.twil.io/check-caller-id?phone=' + phone)
+function checkCallerID(phone, verificationCode, twilioSubdomain) {
+  fetch('https://' + subdomain + '.twil.io/check-caller-id?phone=' + phone)
   .then((response) => {
     return response.json();
   })
@@ -85,7 +93,7 @@ function checkCallerID(phone, verificationCode, campaignCode) {
     } else {
       checkAgain = confirm('Your caller ID is not verified. Your code was ' + verificationCode + '. If you clicked OK before entering the code, enter it and click OK to check again. If you did not get a verification call, click Cancel, check the phone number you entered, and try again.');
       if (checkAgain) {
-        checkCallerID(phone, verificationCode, campaignCode);
+        checkCallerID(phone, verificationCode, twilioSubdomain);
       }
     }
   });

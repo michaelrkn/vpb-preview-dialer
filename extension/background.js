@@ -29,11 +29,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-function setupConnection() {
+async function setupConnection() {
   var campaignCode = localStorage.getItem('campaignCode');
   var accessCode = localStorage.getItem('accessCode');
 
-  return fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
+  if(!localStorage.getItem('twilioSubdomain')) {
+    const resp = await fetch('https://' + campaignCode + '.twil.io/legacy-update')
+    const payload = resp.json()
+    localStorage.setItem('twilioSubdomain', payload.twilioSubdomain)
+  }
+
+  const twilioSubdomain = localStorage.getItem('twilioSubdomain')
+
+  return fetch('https://' + twilioSubdomain + '.twil.io/capability-token?accessCode=' + accessCode)
   .then((response) => {
     return response.json();
   })
