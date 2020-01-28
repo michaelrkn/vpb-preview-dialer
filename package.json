@@ -1,11 +1,17 @@
 {
-  "name": "vpn-preview-dialer",
+  "name": "vpb-preview-dialer",
   "version": "1.0.0",
-  "description": "Chrome extension and supporting scripts for VPB Preview Dialer chrome extension.",
+  "description": "VPB Preview Dialer.",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ext": "sh scripts/build-extension.sh"
+    "build:ext": "sh scripts/build-extension.sh",
+    "start": "twilio-run",
+    "deploy": "twilio-run deploy --environment=public --no-assets"
+  },
+  "engines": {
+    "node": "10.17.0"
   },
   "repository": {
     "type": "git",
@@ -21,6 +27,7 @@
     "Jake Lambert <jake@onahill.co>"
   ],
   "devDependencies": {
-    "twilio": "^3.39.3"
+    "twilio": "^3.39.3",
+    "twilio-run": "^2.0.0"
   }
 }
