@@ -21,7 +21,11 @@ exports.handler = function(context, event, callback) {
       callback(null, response)
     })
     .catch(function(error) {
-      response.setStatusCode(400);
+      if(error.code === 21450) {
+        response.setStatusCode(200)
+      } else {
+        response.setStatusCode(400);
+      }
       response.setBody(error);
       callback(null, response);
     })
