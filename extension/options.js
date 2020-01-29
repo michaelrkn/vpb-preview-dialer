@@ -15,15 +15,21 @@ window.onload = () => {
     var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
     var accessCode = document.getElementById('access-code').value.replace(" ", "");
 
-    if(!localStorage.getItem('twilioSubdomain')) {
-      const resp = await fetch('https://' + campaignCode + '.twil.io/legacy-update')
-      const payload = resp.json()
-      localStorage.setItem('twilioSubdomain', payload.twilioSubdomain)
-    }
-
-    const twilioSubdomain = localStorage.getItem('twilioSubdomain')
-
-    fetch('https://' + twilioSubdomain + '.twil.io/capability-token?accessCode=' + accessCode)
+    var twilioSubdomain = localStorage.getItem('twilioSubdomain')
+    new Promise(async (resolve, reject) => {
+      try {
+        if(!twilioSubdomain) {
+          const resp = await fetch('https://' + campaignCode + '.twil.io/legacy-update')
+          const payload = await resp.json()
+          twilioSubdomain = payload.twilioSubdomain
+          localStorage.setItem('twilioSubdomain', twilioSubdomain)
+        }
+        resolve()
+      } catch(e) {
+        reject(e)
+      }
+    })
+    .then(() => fetch('https://' + twilioSubdomain + '.twil.io/capability-token?accessCode=' + accessCode))
     .then((response) => {
       return response.json();
     })
@@ -40,6 +46,7 @@ window.onload = () => {
 
   var phoneForm = document.getElementById('verify-phone');
   phoneForm.addEventListener('submit', (event) => {
+    const twilioSubdomain = localStorage.getItem('twilioSubdomain')
     event.preventDefault();
 
     var phone = document.getElementById('number').value.replace(/\D/g,'');
@@ -47,7 +54,7 @@ window.onload = () => {
 
     if (phone.length !== 10) {
       alert('Please enter a valid 10-digit phone number.');
-    } else if (!campaignCode && !twilioSubdomain) {
+    } else if (!campaignCode) {
       alert('Set your campaign and access codes before setting your caller ID.')
     } else {
       fetch('https://' + twilioSubdomain + '.twil.io/verify-caller-id?phone=' + phone)
@@ -83,7 +90,7 @@ function setCallerID(phone) {
 }
 
 function checkCallerID(phone, verificationCode, twilioSubdomain) {
-  fetch('https://' + subdomain + '.twil.io/check-caller-id?phone=' + phone)
+  fetch('https://' + twilioSubdomain + '.twil.io/check-caller-id?phone=' + phone)
   .then((response) => {
     return response.json();
   })
