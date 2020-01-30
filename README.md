@@ -68,9 +68,7 @@ Domain: vpb-preview-dialer-3049-public.twil.io
 3. Modify `scripts/legacy-update.js` with the new subdomain. Then, manually add this file to the **old** functions for this account.
 4. Twilio will have modified `.twilio-functions`. Copy the contents to a new file in `twilio-config` with a self explanatory name.
 
-Once **all** accounts are updated, publish the new extension version:
-
-`npm run build:ext` will create an extension artifact in "build/extension.zip"
+Once **all** accounts are updated, publish the new extension version with the files in `/extension`. When the update is installed, if there is a campaign code set we will lookup the new twilioDomain in the backgroud. Otherwise, we will do so when the using changes any options.
 
 Finally, commit the new `twilio-config` files.
 
