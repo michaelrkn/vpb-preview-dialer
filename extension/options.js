@@ -15,21 +15,8 @@ window.onload = () => {
     var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
     var accessCode = document.getElementById('access-code').value.replace(" ", "");
 
-    var twilioSubdomain = localStorage.getItem('twilioSubdomain')
-    new Promise(async (resolve, reject) => {
-      try {
-        if(!twilioSubdomain) {
-          const resp = await fetch('https://' + campaignCode + '.twil.io/legacy-update')
-          const payload = await resp.json()
-          twilioSubdomain = payload.twilioSubdomain
-          localStorage.setItem('twilioSubdomain', twilioSubdomain)
-        }
-        resolve()
-      } catch(e) {
-        reject(e)
-      }
-    })
-    .then(() => fetch('https://' + twilioSubdomain + '.twil.io/capability-token?accessCode=' + accessCode))
+    updateTwilioSubdomain()
+    .then(() => fetch('https://' + localStorage.getItem('twilioSubdomain') + '.twil.io/capability-token?accessCode=' + accessCode))
     .then((response) => {
       return response.json();
     })
@@ -57,7 +44,8 @@ window.onload = () => {
     } else if (!campaignCode) {
       alert('Set your campaign and access codes before setting your caller ID.')
     } else {
-      fetch('https://' + twilioSubdomain + '.twil.io/verify-caller-id?phone=' + phone)
+      updateTwilioSubdomain()
+      .then(() => fetch('https://' + localStorage.getItem('twilioSubdomain') + '.twil.io/verify-caller-id?phone=' + phone))
       .then((response) => {
         return response.json();
       })
@@ -68,7 +56,7 @@ window.onload = () => {
           var verificationCode = json.verificationCode;
           var checkVerification = confirm('When called, enter ' + verificationCode + ' when asked for your verification code. Click OK after verifying, or Cancel to enter a new number.');
           if (checkVerification) {
-            checkCallerID(phone, verificationCode, twilioSubdomain);
+            checkCallerID(phone, verificationCode, localStorage.getItem('twilioSubdomain'));
           }
         }
       });
@@ -104,4 +92,18 @@ function checkCallerID(phone, verificationCode, twilioSubdomain) {
       }
     }
   });
+}
+
+function updateTwilioSubdomain() {
+  var twilioSubdomain = localStorage.getItem('twilioSubdomain');
+
+  if(!twilioSubdomain) {
+    return fetch('https://' + campaignCode + '.twil.io/legacy-update')
+    .then(resp => resp.json())
+    .then(payload => {
+      localStorage.setItem('twilioSubdomain', payload.twilioSubdomain)
+    })
+  }
+
+  return Promise.resolve()
 }

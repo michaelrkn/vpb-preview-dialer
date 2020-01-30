@@ -7,6 +7,15 @@ chrome.runtime.onInstalled.addListener((details) => {
       url: chrome.extension.getURL('options.html'),
       active: true
     });
+  } else if(details.reason === 'update') {
+    const campaignCode = localStorage.getItem('campaignCode')
+    if(!localStorage.getItem('twilioSubdomain') && campaignCode) {
+      fetch('https://' + campaignCode + '.twil.io/legacy-update')
+      .then(resp => resp.json())
+      .then(payload => {
+        localStorage.setItem('twilioSubdomain', payload.twilioSubdomain)
+      })
+    }
   }
 });
 

@@ -43,7 +43,7 @@ To install the extension for development go to chrome://extensions/, switch on D
 Every time you make changes to the code, you'll need to hit the little
 refresh button on chrome://extensions/ for the extension. The only
 thing about testing is that ideally, we don't actually want to submit
-the "not home" result that will always happen; I think you can disable
+the "not home" result that will always happen; Disable
 submitting by commenting out controls-openvpb.js#16, which is
 `nextContact.click();`.
 
@@ -51,15 +51,15 @@ submitting by commenting out controls-openvpb.js#16, which is
 ```
 brew tap twilio/brew && brew install twilio
 twilio plugins:install @twilio-labs/plugin-serverless
+```
 
-Then `npm start`. This will launch the functions in a local container.
-Configure the extension as normal, then run `localStorage.setItem('twilioSubdomain', 'localhost')` from the console in the extension, and you should be able to hit the local functions from the local extension.
+`npm start` will launch the functions in a local container.
 
 ### Upgrading legacy functions
 1. `cp .env-sample .env`
 
 For each account:
-1. Edit `.env` to have the correct information. The twilio deployer is aware of this file.
+1. Edit `.env` to have the correct information. The twilio deployer is aware of this file. (You should be able to create a seperate .env file per account and `npm run deploy -- --env account1.env` or similar but I have not specifically tested this.)
 2. `npm run deploy` This should fully configure and deploy an environment. Make a note of the subdomain of the newly created domain, e.g. "vpb-preview-dialer-3049-public" in the following:
 ```
 Deployment Details
