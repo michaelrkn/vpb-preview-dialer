@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-async function setupConnection() {
+function setupConnection() {
   var accessCode = localStorage.getItem('accessCode');
   var twilioSubdomain = localStorage.getItem('twilioSubdomain')
 
