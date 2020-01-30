@@ -5,7 +5,7 @@ exports.handler = function(context, event, callback) {
       if (event.RingUntilVoicemail) {
         var timeout = 30;
       } else {
-        var timeout = 1; //15;
+        var timeout = 15;
       }
       
       const dial = twiml.dial({
@@ -13,6 +13,7 @@ exports.handler = function(context, event, callback) {
         callerId: event.From,
         timeout: timeout
       });
+
       dial.number('4153475723'); //event.To);
     }
     
