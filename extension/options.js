@@ -33,7 +33,6 @@ window.onload = () => {
 
   var phoneForm = document.getElementById('verify-phone');
   phoneForm.addEventListener('submit', (event) => {
-    const twilioSubdomain = localStorage.getItem('twilioSubdomain')
     event.preventDefault();
 
     var phone = document.getElementById('number').value.replace(/\D/g,'');
