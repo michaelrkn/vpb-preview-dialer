@@ -14,7 +14,7 @@ exports.handler = function(context, event, callback) {
         timeout: timeout
       });
 
-      dial.number('4153475723'); //event.To);
+      dial.number(context.TEST_PHONE_NUMBER || event.To);
     }
     
     callback(null, twiml);

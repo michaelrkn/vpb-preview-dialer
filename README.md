@@ -57,17 +57,17 @@ twilio plugins:install @twilio-labs/plugin-serverless
 
 ### Upgrading legacy functions
 1. `cp .env-sample .env`
-2. Change the hardcoded url to `event.To`
+
 For each account:
-3. Edit `.env` to have the correct information. The twilio deployer is aware of this file. (You should be able to create a seperate .env file per account and `npm run deploy -- --env account1.env` or similar but I have not specifically tested this.)
-4. `npm run deploy` This should fully configure and deploy an environment. Make a note of the subdomain of the newly created domain, e.g. "vpb-preview-dialer-3049-public" in the following:
+1. Edit `.env` to have the correct information. The twilio deployer is aware of this file. (You should be able to create a seperate .env file per account and `npm run deploy -- --env account1.env` or similar but I have not specifically tested this.)
+2. `npm run deploy` This should fully configure and deploy an environment. Make a note of the subdomain of the newly created domain, e.g. "vpb-preview-dialer-3049-public" in the following:
 ```
 Deployment Details
 Domain: vpb-preview-dialer-3049-public.twil.io
 ```
-5. Modify `scripts/legacy-update.js` with the new subdomain. Then, manually add this file to the **old** functions for this account.
-6. Point the TwiML voice app callback to the new subdomain.
-7. Twilio will have modified `.twilio-functions`. Copy the contents to a new file in `twilio-config` with a self explanatory name.
+3. Modify `scripts/legacy-update.js` with the new subdomain. Then, manually add this file to the **old** functions for this account.
+4. Point the TwiML voice app callback to the new subdomain.
+5. Twilio will have modified `.twilio-functions`. Copy the contents to a new file in `twilio-config` with a self explanatory name.
 
 Once **all** accounts are updated, publish the new extension version with the files in `/extension`. When the update is installed, if there is a campaign code set we will lookup the new twilioDomain in the backgroud. Otherwise, we will do so when the using changes any options.
 
