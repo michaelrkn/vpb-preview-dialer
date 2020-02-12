@@ -47,8 +47,8 @@ window.onload = () => {
       .then(() => fetch('https://' + localStorage.getItem('twilioSubdomain') + '.twil.io/verify-caller-id?phone=' + phone))
       .then(async (response) => {
         if (response.status === 400) {
-          alert('Invalid phone number. Please check that your phone number is entered correctly, and try again.')
-          document.forms["verify-phone"].elements.item('number').focus()
+          alert('Invalid phone number. Please check that your phone number is entered correctly, and try again.');
+          document.forms["verify-phone"].elements.item('number').focus();
         }
         const json = await response.json();
         if (json.code === 21450) {
@@ -60,7 +60,7 @@ window.onload = () => {
             checkCallerID(phone, verificationCode, localStorage.getItem('twilioSubdomain'));
           }
         }
-      })
+      });
     }
   }, false);
 
