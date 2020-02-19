@@ -77,7 +77,7 @@ function prepareDial(number, tab) {
   connection.on('accept', () => { connection.answered = true; });
   connection.on('disconnect', handleDisconnect);
 
-  var audio = new Audio('https://media.twiliocdn.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
+  var audio = new Audio('https://sdk.twilio.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
   audio.play();
 }
 
