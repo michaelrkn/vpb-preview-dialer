@@ -43,6 +43,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message === 'unanswered') {
     notHomeSelection().click();
     goToNextContact();
+  } else if (message === 'noOutgoingCallerID') {
+    alert("You haven't set an outgoing Caller ID. Click the V icon next to your address bar, then Options, and then enter the phone number you'd like to show up when you make calls.");
   }
 });
 

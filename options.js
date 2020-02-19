@@ -58,7 +58,7 @@ window.onload = () => {
             checkCallerID(phone, verificationCode, campaignCode);
           }
         } else {
-          alert("There was an unexpected error: " = json.message);
+          alert("There was an unexpected error: " + json.message);
         }
       });
     }

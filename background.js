@@ -47,6 +47,9 @@ function setupConnection() {
 }
 
 function call(number, tab) {
+  if (localStorage.getItem('outgoingCallerID') === null) {
+    chrome.tabs.sendMessage(tab, 'noOutgoingCallerID');
+  }
   if (!Twilio.Device.isInitialized || Twilio.Device.status() === 'offline') {
     setupConnection().then((device) => {
       device.on('ready', function() {

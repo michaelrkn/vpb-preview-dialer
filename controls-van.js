@@ -54,6 +54,8 @@ window.addEventListener("load", (event) => {
       var element = document.querySelectorAll('input[name="resultCodeId"][value="1"]')[0];
       element.click();
       goToNextContact();
+    } else if (message === 'noOutgoingCallerID') {
+      alert("You haven't set an outgoing Caller ID. Click the V icon next to your address bar, then Options, and then enter the phone number you'd like to show up when you make calls.");
     }
   });
 
