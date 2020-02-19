@@ -49,12 +49,16 @@ window.onload = () => {
       .then((json) => {
         if (json.code === 21450) {
           setCallerID(phone);
-        } else {
+        } else if (json.status === 400) {
+          alert(json.message);
+        } else if (json.verificationCode) {
           var verificationCode = json.verificationCode;
           var checkVerification = confirm('When called, enter ' + verificationCode + ' when asked for your verification code. Click OK after verifying, or Cancel to enter a new number.');
           if (checkVerification) {
             checkCallerID(phone, verificationCode, campaignCode);
           }
+        } else {
+          alert("There was an unexpected error: " = json.message);
         }
       });
     }
