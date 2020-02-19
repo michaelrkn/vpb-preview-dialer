@@ -47,10 +47,11 @@ function setupConnection() {
 }
 
 function call(number, tab) {
-  if (localStorage.getItem('outgoingCallerID') === null) {
+  if (localStorage.getItem('campaignCode') === null) {
+    chrome.tabs.sendMessage(tab, 'noCampaignCode');
+  } else if (localStorage.getItem('outgoingCallerID') === null) {
     chrome.tabs.sendMessage(tab, 'noOutgoingCallerID');
-  }
-  if (!Twilio.Device.isInitialized || Twilio.Device.status() === 'offline') {
+  } else if (!Twilio.Device.isInitialized || Twilio.Device.status() === 'offline') {
     setupConnection().then((device) => {
       device.on('ready', function() {
         prepareDial(number, tab);
