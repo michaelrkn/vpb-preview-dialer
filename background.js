@@ -33,7 +33,7 @@ function setupConnection() {
   var campaignCode = localStorage.getItem('campaignCode');
   var accessCode = localStorage.getItem('accessCode');
 
-  return fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
+  return fetch('https://' + campaignCode + '.twil.io/access-token?accessCode=' + accessCode)
   .then((response) => {
     return response.json();
   })
