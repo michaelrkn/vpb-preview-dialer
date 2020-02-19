@@ -46,6 +46,12 @@ function setupConnection() {
   });
 }
 
+Twilio.Device.on('error', function(error) {
+  if (error.code === 31205) { // token expired: https://github.com/twilio/twilio-client.js/issues/73
+    setupConnection();
+  }
+});
+
 function call(number, tab) {
   if (localStorage.getItem('campaignCode') === null) {
     chrome.tabs.sendMessage(tab, 'noCampaignCode');
