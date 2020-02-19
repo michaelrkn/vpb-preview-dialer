@@ -53,7 +53,11 @@ window.addEventListener("load", (event) => {
       if (reached) { switchButton.click(); }
       var element = document.querySelectorAll('input[name="resultCodeId"][value="1"]')[0];
       element.click();
-      goToNextContact();
+      chrome.runtime.sendMessage({ getDevelopment: true }, (development) => {
+        if (!development) {
+          goToNextContact();
+        }
+      });
     }  else if (message === 'noCampaignCode') {
       alert("You haven't set up the Preview Dialer. Click the V icon next to your address bar, then Options, and then set your campaign code, access code, and phone number.");
     } else if (message === 'noOutgoingCallerID') {

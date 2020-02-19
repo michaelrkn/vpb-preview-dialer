@@ -18,6 +18,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   var tab = sender.tab.id;
   if (message.getCallOnLoad) {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
+  } else if (message.getDevelopment) {
+    sendResponse(chrome.runtime.getManifest().update_url === undefined);
   } else if (message.hangup) {
     hangup();
   } else if (message.setupConnection) {

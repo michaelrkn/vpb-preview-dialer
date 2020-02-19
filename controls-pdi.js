@@ -42,7 +42,11 @@ function goToNextContact() {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message === 'unanswered') {
     notHomeSelection().click();
-    goToNextContact();
+    chrome.runtime.sendMessage({ getDevelopment: true }, (development) => {
+      if (!development) {
+        goToNextContact();
+      }
+    });
   }  else if (message === 'noCampaignCode') {
     alert("You haven't set up the Preview Dialer. Click the V icon next to your address bar, then Options, and then set your campaign code, access code, and phone number.");
   } else if (message === 'noOutgoingCallerID') {
