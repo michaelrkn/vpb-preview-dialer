@@ -1,4 +1,4 @@
-window.LogRocket && window.LogRocket.init('0bvywm/preview-dialer');
+Sentry.init({ dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962' });
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
