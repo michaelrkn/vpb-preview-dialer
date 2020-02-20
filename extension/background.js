@@ -1,12 +1,13 @@
 Sentry.init({ dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962' });
 
+chrome.browserAction.onClicked.addListener(function() {
+  chrome.runtime.openOptionsPage();
+});
+
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     localStorage.setItem('callOnLoad', true);
-    chrome.tabs.create({
-      url: chrome.extension.getURL('options.html'),
-      active: true
-    });
+    chrome.runtime.openOptionsPage();
   }
 });
 
