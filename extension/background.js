@@ -1,4 +1,6 @@
-Sentry.init({ dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962' });
+if (inDevelopmentEnvironment()) {
+  Sentry.init({ dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962' });
+}
 
 chrome.browserAction.onClicked.addListener(function() {
   chrome.runtime.openOptionsPage();
@@ -20,7 +22,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.getCallOnLoad) {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
   } else if (message.getDevelopment) {
-    sendResponse(chrome.runtime.getManifest().update_url === undefined);
+    sendResponse(inDevelopmentEnvironment());
   } else if (message.hangup) {
     hangup();
   } else if (message.setupConnection) {
@@ -112,4 +114,8 @@ function sendDigit(digit) {
   if (connection) {
     connection.sendDigits(digit);
   }
+}
+
+function inDevelopmentEnvironment() {
+  return chrome.runtime.getManifest().update_url === undefined;
 }
