@@ -1,4 +1,4 @@
-if (inDevelopmentEnvironment()) {
+if (!inDevelopmentEnvironment()) {
   Sentry.init({ dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962' });
 }
 
