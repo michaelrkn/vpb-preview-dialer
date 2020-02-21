@@ -36,9 +36,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
     });
   } else if (message === 'noCampaignCode') {
-    alert("You haven't set up the Preview Dialer. Click the V icon next to your address bar, then Options, and then set your campaign code, access code, and phone number.");
+    alert("You haven't set up the Preview Dialer. Click the V icon next to your address bar and then set your campaign code, access code, and phone number.");
   } else if (message === 'noOutgoingCallerID') {
-    alert("You haven't set an outgoing Caller ID. Click the V icon next to your address bar, then Options, and then enter the phone number you'd like to show up when you make calls.");
+    alert("You haven't set an outgoing Caller ID. Click the V icon next to your address bar and then enter the phone number you'd like to show up when you make calls.");
   }
 });
 
