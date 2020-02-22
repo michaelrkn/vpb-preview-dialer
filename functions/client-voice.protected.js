@@ -7,7 +7,7 @@ exports.handler = function(context, event, callback) {
       var timeout = 15;
     }
 
-    if (context.DEV) {
+    if (context.DEV === "true") {
       var number = context.DEV_NUMBER;
     } else {
       var number = event.To;
