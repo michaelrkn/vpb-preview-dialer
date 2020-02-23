@@ -13,10 +13,6 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 });
 
-chrome.runtime.onStartup.addListener((details) => {
-  setupConnection();
-});
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   var tab = sender.tab.id;
   if (message.getCallOnLoad) {
@@ -25,35 +21,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse(inDevelopmentEnvironment());
   } else if (message.hangup) {
     hangup();
-  } else if (message.setupConnection) {
-    setupConnection();
   } else if (message.sendDigit) {
     sendDigit(message.sendDigit);
   } else if (message.dial) {
     call(message.dial, tab);
-  }
-});
-
-function setupConnection() {
-  var campaignCode = localStorage.getItem('campaignCode');
-  var accessCode = localStorage.getItem('accessCode');
-
-  return fetch('https://' + campaignCode + '.twil.io/access-token?accessCode=' + accessCode)
-  .then((response) => {
-    return response.json();
-  })
-  .then((json) => {
-    var device = Twilio.Device.setup(json.token, {
-      enableRingingState: true
-    });
-    device.audio.outgoing(false);
-    return device;
-  });
-}
-
-Twilio.Device.on('error', function(error) {
-  if (error.code === 31205) { // token expired: https://github.com/twilio/twilio-client.js/issues/73
-    setupConnection();
   }
 });
 
@@ -62,37 +33,78 @@ function call(number, tab) {
     chrome.tabs.sendMessage(tab, 'noCampaignCode');
   } else if (localStorage.getItem('outgoingCallerID') === null) {
     chrome.tabs.sendMessage(tab, 'noOutgoingCallerID');
-  } else if (!Twilio.Device.isInitialized || Twilio.Device.status() === 'offline') {
-    setupConnection().then((device) => {
-      device.on('ready', function() {
-        prepareDial(number, tab);
-      });
-    });
   } else {
-    prepareDial(number, tab);
+    authenticateAndSetup(number, tab);
   }
 }
 
-function prepareDial(number, tab) {
-  hangup();
-  var connection = dial(number);
-  connection.answered = false;
-  connection.tab = tab;
+function authenticateAndSetup(number, tab) {
+  getAccessToken().then((accessToken) => {
+    var device = setupDevice(accessToken);
+    device.tab = tab;
+    device.number = number;
 
-  connection.on('accept', () => { connection.answered = true; });
-  connection.on('disconnect', handleDisconnect);
+    device.on('ready', prepareDial);
+    device.on('offline', handleOffline);
+    device.on('error', ((error) => {
+      if (error.code === 31205 || error.code === 31202) { // access token expired
+        localStorage.removeItem('accessToken');
+        device.removeListener('ready', prepareDial);
+        Twilio.Device.destroy();
+        authenticateAndSetup(number, tab);
+      }
+    }));
+  });
+}
+
+function getAccessToken() {
+  var accessToken = localStorage.getItem('accessToken');
+  if (accessToken) {
+    return Promise.resolve(accessToken);
+  } else {
+    var campaignCode = localStorage.getItem('campaignCode');
+    var accessCode = localStorage.getItem('accessCode');
+
+    return fetch('https://' + campaignCode + '.twil.io/access-token?accessCode=' + accessCode)
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      localStorage.setItem('accessToken', json.token);
+      return json.token;
+    });
+  }
+}
+
+function setupDevice(accessToken) {
+  var device = Twilio.Device.setup(accessToken, {
+    enableRingingState: true
+  });
+  device.audio.outgoing(false);
+  return device;
+}
+
+function prepareDial(device) {
+  device.removeListener('ready', prepareDial);
 
   var audio = new Audio('https://sdk.twilio.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
   audio.play();
+
+  var connection = dial(device);
+  connection.answered = false;
+  connection.tab = device.tab;
+
+  connection.on('accept', () => { connection.answered = true; });
+  connection.on('disconnect', handleDisconnect);
 }
 
-function dial(number) {
+function dial(device) {
   var params = {
-    To: number,
+    To: device.number,
     From: localStorage.getItem('outgoingCallerID'),
     RingUntilVoicemail: JSON.parse(localStorage.getItem('ringUntilVoicemail'))
   };
-  return Twilio.Device.connect(params);
+  return device.connect(params);
 }
 
 function hangup() {
@@ -101,12 +113,19 @@ function hangup() {
     connection.removeListener('disconnect', handleDisconnect);
     connection.disconnect();
   }
+  Twilio.Device.destroy();
 }
 
 function handleDisconnect(connection) {
   if (!connection.answered) {
     chrome.tabs.sendMessage(connection.tab, 'unanswered');
   }
+  Twilio.Device.destroy();
+}
+
+function handleOffline(device) {
+  device.removeListener('offline', handleOffline);
+  Twilio.Device.destroy();
 }
 
 function sendDigit(digit) {
