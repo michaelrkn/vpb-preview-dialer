@@ -1,5 +1,4 @@
-window.addEventListener("load", (event) => {
-  this.alert(`Welcome to the Virtual Phone Bank Preview Dialer, by Political Dialing Systems (www.politicaldialingsystems.com).
+alert(`Welcome to the Virtual Phone Bank Preview Dialer, by Political Dialing Systems (www.politicaldialingsystems.com).
 
 When a contact loads, you'll be asked if you want to call them.
 You can also call by clicking the phone number.
@@ -20,4 +19,3 @@ For "Couldn't Reach" statuses, press:
 You don't need to click "I Couldn't Reach..." - just press the key.
 
 You can also press "s" to open the Scheduler, and "o" to go to Notes (if available).`)
-});

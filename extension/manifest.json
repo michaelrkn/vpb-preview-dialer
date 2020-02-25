@@ -16,22 +16,7 @@
   "background": {
     "page": "background.html"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://*/VirtualPhoneBankRun.aspx?VirtualPhoneBankListID=*", "https://www.openvpb.com/VirtualPhoneBank/EnterVpbCode"],
-      "js": ["instructions.js"]
-    },
-    {
-      "matches": ["https://*/ContactDetailScript.aspx*"],
-      "js": ["controls-van.js"]
-    },
-    {
-      "matches": ["https://www.openvpb.com/VirtualPhoneBank/LoggedIn/*"],
-      "js": ["controls-openvpb.js"]
-    },
-    {
-      "matches": ["https://phonebank.bluevote.com/Home/PhoneBank?pt=*"],
-      "js": ["controls-pdi.js"]
-    }
+  "permissions": [
+    "activeTab"
   ]
 }

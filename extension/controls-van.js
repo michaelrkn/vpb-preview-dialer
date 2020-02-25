@@ -1,3 +1,5 @@
+setupInterface();
+
 function confirmCall(formattedPhone) {
   var dial = confirm('Call ' + formattedPhone + '? Press Enter or click OK to call.');
     if (dial) {
@@ -24,7 +26,7 @@ window.addEventListener("beforeunload", (event) => {
   hangup();
 });
 
-window.addEventListener("load", (event) => {
+function setupInterface() {
   var numberElement = document.getElementById('current-number');
   if (numberElement) {
     var phoneLink = numberElement.firstElementChild;
@@ -122,4 +124,4 @@ window.addEventListener("load", (event) => {
       chrome.runtime.sendMessage({ sendDigit: keyName });
     }
   });
-});
+}

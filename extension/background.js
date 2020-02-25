@@ -2,9 +2,72 @@ if (!inDevelopmentEnvironment()) {
   Sentry.init({ dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962' });
 }
 
-chrome.browserAction.onClicked.addListener(function() {
-  chrome.runtime.openOptionsPage();
+var activeTabs = [];
+
+chrome.browserAction.onClicked.addListener(function(tab) {
+  if (!activeTabs.includes(tab.id)) {
+    checkForVPB(tab);
+  }
 });
+
+function checkForVPB(tab) {
+  var controls = getControls(tab.url);
+    if (controls) {
+      enableDialer(tab, controls);
+    } else {
+      chrome.tabs.executeScript({
+        code: 'alert("Please load a VPB before enabling the Preview Dialer.")'
+      });
+    }
+}
+
+function getControls(url) {
+  if (url.includes('https://www.openvpb.com/VirtualPhoneBank/LoggedIn/')) {
+    return 'controls-openvpb.js';
+  } else if (url.includes('ContactDetailScript.aspx')) {
+    return 'controls-van.js';
+  } else if (url.includes('https://phonebank.bluevote.com/Home/PhoneBank?pt=')) {
+    return 'controls-pdi.js';
+  }
+}
+
+function enableDialer(tab, controls) {
+  showInstruction();
+  setBadgeOn(tab.id);
+  loadControls(controls);
+  listenForReload(tab, controls);
+  activeTabs.push(tab.id);
+}
+
+function showInstruction() {
+  chrome.tabs.executeScript({
+    file: 'instructions.js'
+  });
+}
+
+function setBadgeOn(tabId) {
+  chrome.browserAction.setBadgeText({
+    text: 'on',
+    tabId: tabId
+  });
+}
+
+function loadControls(controls) {
+  chrome.tabs.executeScript({
+    file: controls
+  });
+}
+
+function listenForReload(tab, controls) {
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, updatedTab) => {
+    if (tab.id === updatedTab.id) {
+      setBadgeOn(tabId);
+      if (changeInfo.status === 'complete') {
+        loadControls(controls);
+      }
+    }
+  });
+}
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
