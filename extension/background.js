@@ -87,7 +87,7 @@ function setupDevice(accessToken) {
 function prepareDial(device) {
   device.removeListener('ready', prepareDial);
 
-  var audio = new Audio('https://sdk.twilio.com/sdk/js/client/sounds/releases/1.0.0/outgoing.mp3');
+  var audio = new Audio('outgoing.mp3');
   audio.play();
 
   var connection = dial(device);
