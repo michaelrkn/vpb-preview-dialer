@@ -18,7 +18,11 @@ function goToNextContact() {
 
 function insertsContactData(mutations) {
   if (mutations[2]) {
-    return mutations[2].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+    if (mutations[2].addedNodes[0]) {
+      return mutations[2].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+    } else {
+      return mutations[4].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+    }
   }
 }
 
