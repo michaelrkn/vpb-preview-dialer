@@ -97,8 +97,19 @@ function dial(number, tab) {
   } else if (localStorage.getItem('outgoingCallerID') === null) {
     chrome.tabs.sendMessage(tab, 'noOutgoingCallerID');
   } else {
-    authenticateAndSetup(number, tab);
+    checkMicrophonePermissions(number, tab);
   }
+}
+
+function checkMicrophonePermissions(number, tab) {
+  navigator.permissions.query({ name: 'microphone' }).
+  then((result) => {
+    if (result.state === 'granted') {
+      authenticateAndSetup(number, tab);
+    } else {
+      chrome.tabs.sendMessage(tab, 'noMicrophonePermissions');
+    }
+  });
 }
 
 function authenticateAndSetup(number, tab) {
