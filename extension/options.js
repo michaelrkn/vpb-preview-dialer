@@ -9,7 +9,13 @@ window.onload = () => {
   document.getElementById('callOnLoad').checked = JSON.parse(localStorage.getItem('callOnLoad'));
   document.getElementById('ringUntilVoicemail').checked = JSON.parse(localStorage.getItem('ringUntilVoicemail'));
 
-  navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => stream.getTracks()[0].stop()); // get microphone permissions
+  navigator.mediaDevices.getUserMedia({audio: true}). // get microphone permissions
+  then((stream) => stream.getTracks()[0].stop()). // request microphone permissions
+  catch((error) => {
+    if (error.name === 'NotAllowedError') {
+      alert("You can't use the Preview Dialer if you don't give permission to use your microphon. Click the microphone icon on the right side of your address bar and click Allow.");
+    }
+  });
 
   var setupForm = document.getElementById('campaign-setup');
   setupForm.addEventListener('submit', (event) => {
