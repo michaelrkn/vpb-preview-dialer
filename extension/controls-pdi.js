@@ -47,12 +47,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         goToNextContact();
       }
     });
-  }  else if (message === 'noCampaignCode') {
-    alert("You haven't set up the Preview Dialer. Click the V icon next to your address bar and then set your campaign code, access code, and phone number.");
+  } else if (message === 'noCampaignCode') {
+    alert("You haven't set up the Preview Dialer. Right-click the V icon next to your address bar and choose Options, and then set your campaign code, access code, and phone number.");
   } else if (message === 'noOutgoingCallerID') {
-    alert("You haven't set an outgoing Caller ID. Click the V icon next to your address bar and then enter the phone number you'd like to show up when you make calls.");
+    alert("You haven't set an outgoing Caller ID. Right-click the V icon next to your address bar and choose Options, and then enter the phone number you'd like to show up when you make calls.");
   } else if (message === 'noMicrophonePermissions') {
-    alert("You haven't given permission to use your microphone. Click the V icon next to your address bar and when asked to use your microphone, click Allow.");
+    alert("You haven't given permission to use your microphone. Right-click the V icon next to your address bar and choose Options, and when asked to use your microphone, click Allow.");
   }
 });
 
