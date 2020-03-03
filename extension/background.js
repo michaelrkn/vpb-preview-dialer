@@ -87,11 +87,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.sendDigit) {
     sendDigit(message.sendDigit);
   } else if (message.dial) {
-    call(message.dial, tab);
+    dial(message.dial, tab);
   }
 });
 
-function call(number, tab) {
+function dial(number, tab) {
   if (localStorage.getItem('campaignCode') === null) {
     chrome.tabs.sendMessage(tab, 'noCampaignCode');
   } else if (localStorage.getItem('outgoingCallerID') === null) {
@@ -107,12 +107,12 @@ function authenticateAndSetup(number, tab) {
     device.tab = tab;
     device.number = number;
 
-    device.on('ready', prepareDial);
+    device.on('ready', prepareToConnect);
     device.on('offline', handleOffline);
     device.on('error', ((error) => {
       if (error.code === 31205 || error.code === 31202) { // access token expired
         localStorage.removeItem('accessToken');
-        device.removeListener('ready', prepareDial);
+        device.removeListener('ready', prepareToConnect);
         Twilio.Device.destroy();
         authenticateAndSetup(number, tab);
       }
@@ -147,13 +147,13 @@ function setupDevice(accessToken) {
   return device;
 }
 
-function prepareDial(device) {
-  device.removeListener('ready', prepareDial);
+function prepareToConnect(device) {
+  device.removeListener('ready', prepareToConnect);
 
   var audio = new Audio('outgoing.mp3');
   audio.play();
 
-  var connection = dial(device);
+  var connection = connect(device);
   connection.answered = false;
   connection.tab = device.tab;
 
@@ -161,7 +161,7 @@ function prepareDial(device) {
   connection.on('disconnect', handleDisconnect);
 }
 
-function dial(device) {
+function connect(device) {
   var params = {
     To: device.number,
     From: localStorage.getItem('outgoingCallerID'),
