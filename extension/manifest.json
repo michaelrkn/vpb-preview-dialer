@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "VPB Preview Dialer",
   "description": "Turns Virtual Phone Bank into a preview dialer.",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "browser_action": {
     "default_icon": {
       "16": "icon.png"
