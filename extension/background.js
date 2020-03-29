@@ -2,23 +2,45 @@ if (!inDevelopmentEnvironment()) {
   Sentry.init({ dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962' });
 }
 
-var activeTabs = [];
+var activeTabs = {};
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-  if (!activeTabs.includes(tab.id)) {
-    checkForVPB(tab);
+  showInstructions(tab);
+});
+
+function showInstructions(tab) {
+  chrome.tabs.executeScript(tab.id, {
+    file: 'instructions.js'
+  }, () => {
+    if (activeTabs[tab.id] === undefined) {
+      determineVPB(tab);
+    }
+  });
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (activeTabs[tab.id] && changeInfo.status === 'complete') {
+    enableDialer(tab, activeTabs[tab.id]);
   }
 });
 
-function checkForVPB(tab) {
+function setTabOff(tab) {
+  chrome.browserAction.setBadgeText({
+    text: '',
+    tabId: tab.id
+  });
+  delete activeTabs[tab.id];
+}
+
+function determineVPB(tab) {
   var controls = getControls(tab.url);
-    if (controls) {
-      enableDialer(tab, controls);
-    } else {
-      chrome.tabs.executeScript({
-        code: 'alert("Please load a VPB before enabling the Preview Dialer.")'
-      });
-    }
+  if (controls) {
+    enableDialer(tab, controls);
+  } else {
+    chrome.tabs.executeScript(tab.id, {
+      code: 'alert("Please load a VPB before enabling the Preview Dialer.")'
+    });
+  }
 }
 
 function getControls(url) {
@@ -32,39 +54,24 @@ function getControls(url) {
 }
 
 function enableDialer(tab, controls) {
-  showInstruction();
-  setBadgeOn(tab.id);
-  loadControls(controls);
-  listenForReload(tab, controls);
-  activeTabs.push(tab.id);
+  setBadgeOn(tab);
+  loadControls(tab, controls);
+  activeTabs[tab.id] = controls;
 }
 
-function showInstruction() {
-  chrome.tabs.executeScript({
-    file: 'instructions.js'
-  });
-}
-
-function setBadgeOn(tabId) {
+function setBadgeOn(tab) {
   chrome.browserAction.setBadgeText({
     text: 'on',
-    tabId: tabId
+    tabId: tab.id
   });
 }
 
-function loadControls(controls) {
-  chrome.tabs.executeScript({
+function loadControls(tab, controls) {
+  chrome.tabs.executeScript(tab.id, {
     file: controls
-  });
-}
-
-function listenForReload(tab, controls) {
-  chrome.tabs.onUpdated.addListener((tabId, changeInfo, updatedTab) => {
-    if (tab.id === updatedTab.id) {
-      setBadgeOn(tabId);
-      if (changeInfo.status === 'complete') {
-        loadControls(controls);
-      }
+  }, (result) => {
+    if (result === undefined) {
+      setTabOff(tab);
     }
   });
 }
