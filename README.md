@@ -8,8 +8,9 @@ The backend of the app is powered by [Twilio Functions](https://www.twilio.com/d
 
 To develop on the backend, [install Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart).
 
-To add a new account, copy `.env.example`, replace `example` with the
-account's name/campaign code, and fill in the variables.
+To add a new account, create a new account from the Twilio dashboard, generate an API key, and create a TwiML app.
+
+Then, copy `.env.example`, replace `example` with the account's name, and fill in the variables.
 
 To deploy, run:
 
