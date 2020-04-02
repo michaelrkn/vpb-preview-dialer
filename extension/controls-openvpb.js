@@ -1,7 +1,10 @@
+setupInterfaceIfLoaded();
 watchForChanges();
 
-if (document.querySelector('a[href*="tel:"]')) {
-  setupInterface();
+function setupInterfaceIfLoaded() {
+  if (document.querySelector('a[href*="tel:"]')) {
+    setupInterface();
+  }
 }
 
 function watchForChanges() {
@@ -11,6 +14,16 @@ function watchForChanges() {
     }
   });
   observer.observe(document, { attributes: false, childList: true, characterData: false, subtree: true });
+}
+
+function insertsContactData(mutations) {
+  if (mutations[2]) {
+    if (mutations[2].addedNodes[0]) {
+      return mutations[2].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+    } else {
+      return mutations[4].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+    }
+  }
 }
 
 function confirmCall(formattedPhone) {
@@ -29,16 +42,6 @@ function goToNextContact() {
   hangup();
   var nextContact = document.querySelector('.panel-buttons.left button.btn.btn-blue');
   nextContact.click();
-}
-
-function insertsContactData(mutations) {
-  if (mutations[2]) {
-    if (mutations[2].addedNodes[0]) {
-      return mutations[2].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
-    } else {
-      return mutations[4].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
-    }
-  }
 }
 
 function notHomeSelection() {
