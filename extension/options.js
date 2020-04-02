@@ -31,6 +31,7 @@ window.onload = () => {
       alert('You\'re all set up! Make sure to set your caller ID before calling.');
       localStorage.setItem('campaignCode', campaignCode);
       localStorage.setItem('accessCode', accessCode);
+      localStorage.removeItem('accessToken');
       chrome.runtime.sendMessage({ setupConnection: true });
     })
     .catch((response) => {
