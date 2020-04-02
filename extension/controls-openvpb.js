@@ -1,6 +1,10 @@
+watchForChanges();
+
 if (document.querySelector('a[href*="tel:"]')) {
   setupInterface();
-} else {
+}
+
+function watchForChanges() {
   var observer = new MutationObserver(function(mutations) {
     if (insertsContactData(mutations)) {
       setupInterface()
