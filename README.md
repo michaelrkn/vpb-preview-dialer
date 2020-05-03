@@ -36,6 +36,9 @@ refresh button on `chrome://extensions/` for the extension.
 
 In development, after the extension selects "Not Home", it will not submit.
 
+When releasing, make sure to bump the bump the version in `manifest.json`,
+`background.js`, and `options.js`.
+
 To deploy the extension, zip the `extension` folder and upload it
 [here](https://chrome.google.com/webstore/devconsole/3793eb02-7d7f-4e75-a980-ad36fefad9da/dkcikjbkeekejknjicohkaidadbjcdee/edit/package).
 
