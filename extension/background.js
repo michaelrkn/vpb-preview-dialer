@@ -1,7 +1,7 @@
 if (!inDevelopmentEnvironment()) {
   Sentry.init({
     dsn: 'https://ed97abb64b8f40bf969f4c6ad509123c@sentry.io/2650962',
-    release: '2.0.3'
+    release: '2.0.4'
   });
   Sentry.configureScope(function(scope) {
     scope.setUser({"username": localStorage.getItem('campaignCode')});
@@ -159,6 +159,9 @@ function getAccessToken() {
     .then((json) => {
       localStorage.setItem('accessToken', json.token);
       return json.token;
+    })
+    .catch((error) => {
+      Sentry.captureException(error);
     });
   }
 }
