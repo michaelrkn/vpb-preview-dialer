@@ -1,4 +1,5 @@
 exports.handler = function(context, event, callback) {
+  const DATABASE_NAME = "vbp-preview-dialer";
 
   let response = new Twilio.Response();
   let headers = {
@@ -6,78 +7,48 @@ exports.handler = function(context, event, callback) {
     "Access-Control-Allow-Methods": "GET",
     "Content-Type": "application/json"
   };
+
   response.setHeaders(headers);
   response.setStatusCode(200);
 
+  let accountSid = event.AccountSid;
+  if (accountSid == null || event.state == null){
+    console.log(event);
+    callback("Missing required paramaters", response);
+    return;
+  }
+
+  let state = JSON.parse(event.state);
+  let campaignCode = state.userCampaignCode;
+  let accessCode = state.userAccessCode;
+
+  if (campaignCode == null || accessCode == null) {
+    console.log(state);
+    callback("Missing required state paramaters", response);
+    return;
+  }
+
   const MongoClient = require('mongodb').MongoClient;
+  const uri = "mongodb+srv://" + context.MONGODB_USER +  ":" + context.MONGODB_PASSWORD + "@cluster0.musam.mongodb.net/" + DATABASE_NAME + "?retryWrites=true&w=majority";
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true
+  });
 
-  const uri = "mongodb+srv://" + context.MONGODB_USER +  ":" + context.MONGODB_PASSWORD + "@cluster0.musam.mongodb.net/" + "sample_airbnb" + "?retryWrites=true&w=majority";
-
-
-  const client = new MongoClient(uri, { useNewUrlParser: true });
+  //TODO - to make things easy could just delete any records with these credentials before insert
   client.connect(err => {
-    const collection = client.db("sample_airbnb").collection("listingsAndReviews");
-    let stringBuilder = "";
-    collection.find({room_type: "Entire home/apt" }).limit(20).toArray(function(err, results) {
-      stringBuilder += JSON.stringify(results);
-      response.setBody(stringBuilder);
-      console.log("loop");
+    const collection = client.db(DATABASE_NAME).collection("accounts");
+    var newAccountDocument = { campaignCode: campaignCode, accessCode: accessCode, accountSid: accountSid };
+    collection.insertOne(newAccountDocument, function(err, results) {
+      if (err) {
+        console.log("Database error", JSON.stringify(err));
+        callback("Database error", response);
+        return;
+      }
+
+      console.log("1 document inserted");
+      response.setBody("Account created");
       callback(null, response);
     });
     client.close();
-    console.log("im in!");
   });
-
-
-  /*
-  var stringBuilder = "";
-  MongoClient.connect(uri)
-    .then((db) => {
-      console.log("im in!");
-      //FIXME issue is im using a different auth method, it feels like I always have to return a promise but perhaps I can manipulate to use the callback as a promise`
-      db.listingsAndReviews
-        .find({ room_type: "Entire home/apt" })
-        .limit(20).then((data) => {
-          data.toArray(function(err,docs) {
-            stringBuilder += JSON.stringify(docs);
-          })
-          response.setBody(stringBuilder);
-          client.close();
-          callback(null, response);
-        })
-        .catch((err) => {
-          console.log("erorr = " + err.stack);
-          callback(null, err);
-        })
-    })
-  .catch((e) => {
-    console.log("erorr = " + e.stack);
-    callback(null, e);
-  });*/
-  //
-  // let strBuilder = ""
-  // pgClient.query('SELECT * FROM accounts')
-  // .then((res) => {
-  //     console.log(res.rows[0]);
-  //     for (let row of res.rows) {
-  //       console.log(JSON.stringify(row));
-  //       strBuilder += JSON.stringify(row) + "\n";
-  //     }
-  //     response.setBody(strBuilder);
-  //
-  // })
-  // .catch(e => console.error(e.stack));
-
-  // TODO ok now what? I need read and write, would be easier with an app in front
-  // of it if: it's easy to just give write permissions so people can't
-  // read other's user credentials
-  // It seems too easy to read and write this database
-
-  // const accountSid = context.ACCOUNT_SID;
-  // const authToken = context.AUTH_TOKEN;
-  // const client = require('twilio')(accountSid, authToken);
-  //
-  // const syncServiceSid = context.TWILIO_SYNC_SERVICE_SID || 'default';
-  // const syncDocumentName = "users";
-
 };
