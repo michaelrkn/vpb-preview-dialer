@@ -40,15 +40,10 @@ window.onload = () => {
     const authUrl = "https://www.twilio.com/authorize/CN17f6c43d2f65609cf03f2fbcf19b132d";
     setupForm.setAttribute("href", authUrl + "?state=" + encodeURIComponent(JSON.stringify(metaData)));
 
-
     console.log(userCampaignCode, userAccessCode);
-
 
     //TODO put this in env variables
     var masterCampaignCode = "test-1163";
-
-
-
 
 // Reusing as a credentials check , doesn't even save the token  and would be nice to get rid of capability token
     fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
