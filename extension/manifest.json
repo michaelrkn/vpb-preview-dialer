@@ -9,7 +9,7 @@
     }
   },
   "options_ui": {
-    "page": "create-account.html",
+    "page": "options.html",
     "open_in_tab": true
   },
   "background": {

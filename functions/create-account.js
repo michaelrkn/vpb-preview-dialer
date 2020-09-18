@@ -50,7 +50,6 @@ exports.handler = function(context, event, callback) {
     })
   };
 
-  // Promise Execution
   connectDbClientPromise()
   .then(function() {
     console.log("db lookup");
@@ -64,7 +63,7 @@ exports.handler = function(context, event, callback) {
         return twilioClient.applications
           .create({
              voiceMethod: 'POST',
-             voiceUrl: 'https://test-1163.twil.io/client-voice',
+             voiceUrl: 'https://vpb-dialer-5062.twil.io/client-voice',
              friendlyName: 'VBP Preview Dialer'
            });
       }
@@ -81,15 +80,15 @@ exports.handler = function(context, event, callback) {
       return results;
     })
     .then(accountRecord => {
-      //Probably need to get ops.first()
       console.log(JSON.stringify(accountRecord));
-      response.setBody("success"));
+      //TODO put in some html asset to redirect to or just include in the response
+      response.setBody("You've successfully created an account!  Please close this window and return to options.");
       client.close();
       callback(null, response);
     })
     .catch(error => {
       client.close();
       console.log(JSON.stringify(error));
-      callback("Account error", response);
+      callback("There was an error creating your account, please try again or contact us", response);
     });
 };

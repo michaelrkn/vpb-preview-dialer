@@ -7,7 +7,7 @@ if (chrome.runtime.getManifest().update_url !== undefined) {
     scope.setUser({"username": localStorage.getItem('campaignCode')});
   });
 }
-
+//var masterCampaignCode = "vpb-dialer-5062";
 window.onload = () => {
   document.getElementById('campaign-code').value = this.localStorage.getItem('campaignCode');
   document.getElementById('access-code').value = this.localStorage.getItem('accessCode');

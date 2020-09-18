@@ -36,54 +36,18 @@
       <div class="intro">
         <h1>Virtual Phone Bank Preview Dialer</h1>
         <h2><a href="https://www.politicaldialingsystems.com/" target="_blank">By Political Dialing Systems</a></h2>
-        <h4>
-          You can access this page at any time by right-clicking the "V" icon next to your address bar and choosing Options.
-        </h4>
       </div>
       <div class="row">
         <div class="column">
-          <h2>Setup</h2>
-          <p>
-            Please give permission to use your microphone,
-            so that you can make calls through the browser on Virtual Phone Bank.
-          </p>
+          <h2>Create Account</h2>
           <p>Create a Campaign Code and Access Code for your account.  These can be given to your team members to use the dialer.  Then hit the "Twilio Connect" button to connect your Twilio account. </p>
           <form id="campaign-setup">
-            <label for="user-campaign-code">Campaign code</label>
-            <input type="text" id="user-campaign-code">
-            <label for="user-access-code">Access code</label>
-            <input type="text" id="user-access-code">
+            <label for="campaign-code">Campaign code</label>
+            <input type="text" id="campaign-code">
+            <label for="access-code">Access code</label>
+            <input type="text" id="access-code">
           </form>
-          <a href="#" target="_blank" id="twilio-connect-button"></a>
-
-        </div>
-        <div class="column">
-          <h2>Options</h2>
-          <p>
-            Below, enter the phone number for the outgoing caller ID.<br>
-            <strong>We'll call you to verify it</strong> if you haven't before.
-          </p>
-          <form id="verify-phone">
-            <label for="number">Phone number</label>
-            <input type="text" id="number">
-            <input type="submit" value="Set caller ID">
-          </form>
-          <p>
-            Uncheck the box below if you'd like to disable the pop-up that asks you if you'd like to call the number.
-            You'll still be able to make calls by pressing "c" or clicking the phone number.
-          </p>
-          <div>
-            <input type="checkbox" id="callOnLoad" checked>
-            <label class="label-inline" for="callOnLoad">Ask to call when each new contact loads</label>
-          </div>
-          <p>
-            Check the box below if you'd like your calls to ring until they reach a voicemail (30 seconds max).
-            This will slow down your dialing considerably.
-          </p>
-          <div>
-            <input type="checkbox" id="ringUntilVoicemail">
-            <label class="label-inline" for="ringUntilVoicemail">Ring until voicemail reached (max 30 seconds)</label>
-          </div>
+          <a href="#" id="twilio-connect-button"></a>
         </div>
       </div>
     </main>
