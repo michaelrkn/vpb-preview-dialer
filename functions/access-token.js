@@ -7,16 +7,48 @@ exports.handler = function(context, event, callback) {
   };
   response.setHeaders(headers);
 
-  if (event.accessCode === context.ACCESS_CODE) {
-    response.setStatusCode(200);
+  const accessCode = event.accessCode;
+  const campaignCode = event.campaignCode;
+
+  const MongoClient = require('mongodb').MongoClient;
+  const uri = "mongodb+srv://" + context.MONGODB_USER +  ":" + context.MONGODB_PASSWORD + "@cluster0.musam.mongodb.net/" + context.MONGODB_DATABASE_NAME + "?retryWrites=true&w=majority";
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true
+  });
+
+  const connectDbClientPromise = () => {
+    return new Promise((resolve, reject) => {
+      client.connect(error => {
+        if (error) {
+          console.log("Error on database client connect", JSON.stringify(error));
+          return reject(error);
+        } else {
+          resolve(null);
+        }
+      });
+    })
+  };
+
+  var accountDocument = { campaignCode: campaignCode, accessCode: accessCode };
+  connectDbClientPromise()
+  .then(() => {
+    console.log("db connection established");
+    const collections = client.db(context.MONGODB_DATABASE_NAME).collection(context.MONGODDB_COLLECTION_NAME);
+    return collections.findOne(accountDocument);
+  })
+  .then(account => {
+    if (account == null) {
+      throw new Error("account doesn't exist");
+    }
+
+    const accountSid = account.accountSid;
+    const outgoingApplicationSid = account.twimlSid;
 
     const AccessToken = require('twilio').jwt.AccessToken;
     const VoiceGrant = AccessToken.VoiceGrant;
 
-    const accountSid = context.ACCOUNT_SID;
     const apiKey = context.API_KEY;
     const apiSecret = context.API_SECRET;
-    const outgoingApplicationSid = context.TWIML_APP_SID;
 
     const token = new AccessToken(accountSid, apiKey, apiSecret);
     const voiceGrant = new VoiceGrant({
@@ -27,9 +59,13 @@ exports.handler = function(context, event, callback) {
     response.setBody({
       'token': token.toJwt()
     });
-  } else {
+    response.setStatusCode(200);
+    callback(null, response);
+  })
+  .catch(error => {
     response.setStatusCode(401);
-  }
+    console.log("Error fetching access token", JSON.stringify(error));
+    callback(new Error("There was an issue finding your account"), null);
+  });
 
-  callback(null, response);
 };

@@ -1,6 +1,4 @@
 exports.handler = function(context, event, callback) {
-  const DATABASE_NAME = "vbp-preview-dialer";
-  const COLLECTION_NAME = "accounts";
 
   let response = new Twilio.Response();
   let headers = {
@@ -30,7 +28,7 @@ exports.handler = function(context, event, callback) {
   }
 
   const MongoClient = require('mongodb').MongoClient;
-  const uri = "mongodb+srv://" + context.MONGODB_USER +  ":" + context.MONGODB_PASSWORD + "@cluster0.musam.mongodb.net/" + DATABASE_NAME + "?retryWrites=true&w=majority";
+  const uri = "mongodb+srv://" + context.MONGODB_USER +  ":" + context.MONGODB_PASSWORD + "@cluster0.musam.mongodb.net/" + context.MONGODB_DATABASE_NAME + "?retryWrites=true&w=majority";
   const client = new MongoClient(uri, {
     useNewUrlParser: true
   });
@@ -53,7 +51,7 @@ exports.handler = function(context, event, callback) {
   connectDbClientPromise()
   .then(function() {
     console.log("db lookup");
-    const collections = client.db(DATABASE_NAME).collection(COLLECTION_NAME);
+    const collections = client.db(context.MONGODB_DATABASE_NAME).collection(context.MONGODDB_COLLECTION_NAME);
     return collections.findOne(accountDocument);
   })
   .then(results => {

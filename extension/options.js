@@ -29,7 +29,7 @@ window.onload = () => {
     var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
     var accessCode = document.getElementById('access-code').value.replace(" ", "");
 
-    fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
+    fetch('https://vpb-dialer-5062.twil.io/access-token?campaignCode=' + campaignCode + '&accessCode=' + accessCode)
     .then((response) => {
       return response.json();
     })
@@ -51,13 +51,14 @@ window.onload = () => {
 
     var phone = document.getElementById('number').value.replace(/\D/g,'');
     var campaignCode = localStorage.getItem('campaignCode');
+    var accessCode = localStorage.getItem('accessCode');
 
     if (phone.length !== 10) {
       alert('Please enter a valid 10-digit phone number.');
     } else if (!campaignCode) {
       alert('Set your campaign and access codes before setting your caller ID.')
     } else {
-      fetch('https://' + campaignCode + '.twil.io/verify-caller-id?phone=' + phone)
+      fetch('https://vpb-dialer-5062.twil.io/verify-caller-id?phone=' + phone + '&campaignCode=' + campaignCode + '&accessCode=' + accessCode)
       .then((response) => {
         return response.json();
       })
