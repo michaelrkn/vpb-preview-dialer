@@ -9,6 +9,7 @@ if (!inDevelopmentEnvironment()) {
 }
 
 var activeTabs = {};
+const TWILIO_BASE_URL = "vpb-dialer-5062";
 
 chrome.browserAction.onClicked.addListener(function(tab) {
   showInstructions(tab);
@@ -152,7 +153,7 @@ function getAccessToken() {
     var campaignCode = localStorage.getItem('campaignCode');
     var accessCode = localStorage.getItem('accessCode');
 
-    return fetch('https://' + campaignCode + '.twil.io/access-token?accessCode=' + accessCode)
+    return fetch('https://' + TWILIO_BASE_URL + '.twil.io/access-token?campaignCode=' + campaignCode + '&accessCode=' + accessCode)
     .then((response) => {
       return response.json();
     })
