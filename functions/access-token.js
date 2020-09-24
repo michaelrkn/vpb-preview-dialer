@@ -44,23 +44,42 @@ exports.handler = function(context, event, callback) {
     const accountSid = account.accountSid;
     const outgoingApplicationSid = account.twimlSid;
 
-    const AccessToken = require('twilio').jwt.AccessToken;
-    const VoiceGrant = AccessToken.VoiceGrant;
 
-    const apiKey = context.API_KEY;
-    const apiSecret = context.API_SECRET;
+    //
+    //
+    // const AccessToken = require('twilio').jwt.AccessToken;
+    // const VoiceGrant = AccessToken.VoiceGrant;
+    //
+    // const apiKey = context.API_KEY;
+    // const apiSecret = context.API_SECRET;
+    //
+    // const token = new AccessToken(accountSid, apiKey, apiSecret);
+    // const voiceGrant = new VoiceGrant({
+    //   outgoingApplicationSid: outgoingApplicationSid
+    // });
+    // token.addGrant(voiceGrant);
+    //
+    // response.setBody({
+    //   'token': token.toJwt()
+    // });
 
-    const token = new AccessToken(accountSid, apiKey, apiSecret);
-    const voiceGrant = new VoiceGrant({
-      outgoingApplicationSid: outgoingApplicationSid
+    let ClientCapability = require('twilio').jwt.ClientCapability;
+    const capability = new ClientCapability({
+      accountSid: accountSid
+      authToken: context.AUTH_TOKEN
     });
-    token.addGrant(voiceGrant);
+    capability.addScope(new ClientCapability.OutgoingClientScope({
+      applicationSid: outgoingApplicationSid
+    }));
+
 
     response.setBody({
-      'token': token.toJwt()
+      'token': capability.toJwt()
     });
     response.setStatusCode(200);
+
     callback(null, response);
+
   })
   .catch(error => {
     response.setStatusCode(401);
