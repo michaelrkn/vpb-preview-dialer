@@ -99,7 +99,7 @@ function setCallerID(phone) {
 }
 
 function checkCallerID(phone, verificationCode, campaignCode) {
-  fetch('https://' + campaignCode + '.twil.io/check-caller-id?phone=' + phone)
+  fetch('https://vpb-dialer-5062.twil.io/check-caller-id?phone=' + phone + '&campaignCode=' + campaignCode + '&accessCode=' + accessCode)
   .then((response) => {
     return response.json();
   })

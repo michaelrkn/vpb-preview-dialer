@@ -57,6 +57,8 @@ function getControls(url) {
     return 'controls-van.js';
   } else if (url.includes('https://phonebank.bluevote.com/Home/PhoneBank?pt=')) {
     return 'controls-pdi.js';
+  } else if (true) {
+    return "";
   }
 }
 
@@ -135,7 +137,14 @@ function authenticateAndSetup(number, tab) {
     device.on('ready', prepareToConnect);
     device.on('offline', handleOffline);
     device.on('error', ((error) => {
+      chrome.extension.getBackgroundPage().console.log(error);
       if (error.code === 31205 || error.code === 31202) { // access token expired
+        if (error.code === 31202 && error.twilioError) {
+          if (error.twilioError.code === 53000){
+            alert ("critical error " + JSON.stringify(error));
+            return;
+          }
+        }
         localStorage.removeItem('accessToken');
         device.removeListener('ready', prepareToConnect);
         Twilio.Device.destroy();

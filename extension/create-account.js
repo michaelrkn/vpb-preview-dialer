@@ -23,4 +23,5 @@ window.onload = () => {
     var metaData = { userCampaignCode : campaignCode, userAccessCode: accessCode };
     const authUrl = "https://www.twilio.com/authorize/CN17f6c43d2f65609cf03f2fbcf19b132d";
     setupForm.setAttribute("href", authUrl + "?state=" + encodeURIComponent(JSON.stringify(metaData)));
+  });
 }

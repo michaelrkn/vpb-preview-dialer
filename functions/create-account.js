@@ -63,7 +63,7 @@ exports.handler = function(context, event, callback) {
              voiceMethod: 'POST',
              voiceUrl: 'https://vpb-dialer-5062.twil.io/client-voice',
              friendlyName: 'VBP Preview Dialer'
-           });
+           }); //FIXME - where is this created?
       }
       return results;
     })
@@ -72,7 +72,7 @@ exports.handler = function(context, event, callback) {
       //Kind of hacky, is there a better way?
       if (results.campaignCode == null) {
         accountDocument.twimlSid = results.sid;
-        const collections = client.db(DATABASE_NAME).collection(COLLECTION_NAME);
+        const collections = client.db(context.MONGODB_DATABASE_NAME).collection(context.MONGODDB_COLLECTION_NAME);
         return collections.insertOne(accountDocument);
       }
       return results;
