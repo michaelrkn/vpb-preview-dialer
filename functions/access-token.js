@@ -45,6 +45,7 @@ exports.handler = function(context, event, callback) {
     const outgoingApplicationSid = account.twimlSid;
 
     console.log("accountSid", accountSid);
+    console.log("outgoingApplicationSid", outgoingApplicationSid);
 
     let ClientCapability = require('twilio').jwt.ClientCapability;
     const capability = new ClientCapability({
@@ -57,6 +58,7 @@ exports.handler = function(context, event, callback) {
     }));
 
     console.log("capability", capability);
+    console.log("capability", capability.toJwt());
 
     response.setBody({
       'token': capability.toJwt()

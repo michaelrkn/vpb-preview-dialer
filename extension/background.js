@@ -178,7 +178,8 @@ function getAccessToken() {
 
 function setupDevice(accessToken) {
   var device = Twilio.Device.setup(accessToken, {
-    enableRingingState: true
+    enableRingingState: true,
+    debug: true
   });
   device.audio.outgoing(false);
   return device;
