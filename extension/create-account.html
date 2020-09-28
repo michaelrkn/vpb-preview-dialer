@@ -40,13 +40,16 @@
       <div class="row">
         <div class="column">
           <h2>Create Account</h2>
-          <p>Create a Campaign Code and Access Code for your account.  These can be given to your team members to use the dialer.  Then hit the "Twilio Connect" button to connect your Twilio account. </p>
-          <form id="create-campaign"> <!-- TODO don't store history -->
+          <p>Create a Campaign Code and Access Code for your account.  These can be given to your team members to use the dialer, but they should be kept secure otherwise. </p>
+          <form id="create-campaign">
             <label for="campaign-code">Campaign code</label>
             <input type="text" id="campaign-code">
             <label for="access-code">Access code</label>
             <input type="text" id="access-code">
-            <p>Provide your Twilio account credentials. We recommend creating a Subaccount in your Twilio Account and providing its credentials instead.</p>
+            <p>Please provide your  email for account recovery.  We won't email you.</p>
+            <label for="email">Email</label>
+            <input type="text" id="email">
+            <p>Please provide your Twilio account credentials. We recommend creating a Subaccount in your Twilio Account and providing its credentials instead.</p>
             <label for="twilio-account-sid">Twilio Account SID</label>
             <input type="text" id="twilio-account-sid">
             <label for="twilio-auth-token">Twilio Account Auth Token</label>

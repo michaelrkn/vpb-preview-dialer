@@ -14,8 +14,9 @@ exports.handler = function(context, event, callback) {
   let authToken = event.authToken;
   let campaignCode = event.campaignCode;
   let accessCode = event.accessCode;
+  let email = event.email;
 
-  if (accountSid == null || authToken == null || campaignCode == null || accessCode == null){
+  if (accountSid == null || authToken == null || campaignCode == null || accessCode == null || email == null){
     console.log(event);
     callback("Missing required paramaters", response);
     return;
@@ -27,7 +28,7 @@ exports.handler = function(context, event, callback) {
     useNewUrlParser: true
   });
 
-  var accountDocument = { campaignCode: campaignCode, accessCode: accessCode, accountSid: accountSid, authToken: authToken };
+  var accountDocument = { campaignCode: campaignCode, accessCode: accessCode, accountSid: accountSid, authToken: authToken, email: email };
 
   const connectDbClientPromise = () => {
     return new Promise((resolve, reject) => {
@@ -56,7 +57,7 @@ exports.handler = function(context, event, callback) {
              voiceMethod: 'POST',
              voiceUrl: 'https://vpb-dialer-5062.twil.io/client-voice',
              friendlyName: 'VBP Preview Dialer'
-           }); 
+           });
       }
       return results;
     })
