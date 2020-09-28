@@ -41,10 +41,9 @@ exports.handler = function(context, event, callback) {
       throw new Error("account doesn't exist");
     }
 
-
   const accountSid = account.accountSid;
-
-  const twilioClient = require('twilio')(accountSid context.AUTH_TOKEN);
+  const authToken = account.authToken;
+  const twilioClient = require('twilio')(accountSid, authToken);
 
   twilioClient.outgoingCallerIds
   .list({

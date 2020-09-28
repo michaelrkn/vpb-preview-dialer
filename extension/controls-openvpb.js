@@ -27,7 +27,6 @@ function insertsContactData(mutations) {
 }
 
 function confirmCall(formattedPhone) {
-  formattedPhone = "+15159752255";
   var dial = confirm('Call ' + formattedPhone + '? Press Enter or click OK to call.');
     if (dial) {
       var phone = formattedPhone.replace(/\D/g,'');

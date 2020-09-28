@@ -10,20 +10,14 @@ exports.handler = function(context, event, callback) {
   response.setHeaders(headers);
   response.setStatusCode(200);
 
-  let accountSid = event.AccountSid;
-  if (accountSid == null || event.state == null){
+  let accountSid = event.accountSid;
+  let authToken = event.authToken;
+  let campaignCode = event.campaignCode;
+  let accessCode = event.accessCode;
+
+  if (accountSid == null || authToken == null || campaignCode == null || accessCode == null){
     console.log(event);
     callback("Missing required paramaters", response);
-    return;
-  }
-
-  let state = JSON.parse(event.state);
-  let campaignCode = state.userCampaignCode;
-  let accessCode = state.userAccessCode;
-
-  if (campaignCode == null || accessCode == null) {
-    console.log(state);
-    callback("Missing required state paramaters", response);
     return;
   }
 
@@ -33,7 +27,7 @@ exports.handler = function(context, event, callback) {
     useNewUrlParser: true
   });
 
-  var accountDocument = { campaignCode: campaignCode, accessCode: accessCode, accountSid: accountSid };
+  var accountDocument = { campaignCode: campaignCode, accessCode: accessCode, accountSid: accountSid, authToken: authToken };
 
   const connectDbClientPromise = () => {
     return new Promise((resolve, reject) => {
@@ -56,14 +50,13 @@ exports.handler = function(context, event, callback) {
   })
   .then(results => {
       if (results == null) {
-        const authToken = context.AUTH_TOKEN;
-        const twilioClient = require('twilio')(accountDocument.accountSid, authToken);
+        const twilioClient = require('twilio')(accountSid, authToken);
         return twilioClient.applications
           .create({
              voiceMethod: 'POST',
              voiceUrl: 'https://vpb-dialer-5062.twil.io/client-voice',
              friendlyName: 'VBP Preview Dialer'
-           }); //FIXME - where is this created?
+           }); 
       }
       return results;
     })

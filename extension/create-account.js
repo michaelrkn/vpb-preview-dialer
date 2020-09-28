@@ -8,20 +8,26 @@ if (chrome.runtime.getManifest().update_url !== undefined) {
   });
 }
 
-window.onload = () => {
-  var setupForm = document.getElementById('twilio-connect-button');
+var setupForm = document.getElementById('create-campaign');
+setupForm.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-  setupForm.addEventListener('click', (event) => {
-    // event.preventDefault();
+  var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
+  var accessCode = document.getElementById('access-code').value.replace(" ", "");
+  var twilioAccountSid = document.getElementById('twilio-account-sid').value.replace(" ", "");
+  var twilioAccountAuthToken = document.getElementById('twilio-auth-token').value.replace(" ", "");
 
-    var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
-    var accessCode = document.getElementById('access-code').value.replace(" ", "");
-
+  fetch('https://vpb-dialer-5062.twil.io/create-account?campaignCode=' + campaignCode + '&accessCode=' + accessCode + '&accountSid=' + twilioAccountSid + '&authToken=' + twilioAccountAuthToken)
+  .then((response) => {
+    return response.json();
+  })
+  .then((json) => {
+    alert('Your account is created, go back to the options page and follow the instructions.');
     localStorage.setItem('campaignCode', campaignCode);
     localStorage.setItem('accessCode', accessCode);
-
-    var metaData = { userCampaignCode : campaignCode, userAccessCode: accessCode };
-    const authUrl = "https://www.twilio.com/authorize/CN17f6c43d2f65609cf03f2fbcf19b132d";
-    setupForm.setAttribute("href", authUrl + "?state=" + encodeURIComponent(JSON.stringify(metaData)));
+    localStorage.removeItem('accessToken');
+  })
+  .catch((response) => {
+    alert('Sorry, the campaign or access code you entered was incorrect.');
   });
-}
+});

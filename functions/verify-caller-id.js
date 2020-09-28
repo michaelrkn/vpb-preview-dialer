@@ -40,7 +40,7 @@ exports.handler = function(context, event, callback) {
     }
 
     const accountSid = account.accountSid;
-    const authToken = context.AUTH_TOKEN;
+    const authToken = account.authToken;
     const twilioClient = require('twilio')(accountSid, authToken);
 
     return twilioClient.validationRequests.create({
