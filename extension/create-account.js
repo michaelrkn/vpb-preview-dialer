@@ -29,7 +29,7 @@ window.onload = () => {
       localStorage.removeItem('accessToken');
     })
     .catch((response) => {
-      alert('Sorry, the campaign or access code you entered was incorrect.');
+      alert('Sorry, there was an issue creating your account, please try again.');
     });
   });
 }

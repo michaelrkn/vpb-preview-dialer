@@ -59,8 +59,6 @@ function getControls(url) {
     return 'controls-pdi.js';
   } else if (inDevelopmentEnvironment()) {
     return "test-dial.js";
-  } else if (true) {
-    return "";
   }
 }
 
@@ -141,12 +139,6 @@ function authenticateAndSetup(number, tab) {
     device.on('error', ((error) => {
       chrome.extension.getBackgroundPage().console.log(error);
       if (error.code === 31205 || error.code === 31202) { // access token expired
-        if (error.code === 31202 && error.twilioError) {
-          if (error.twilioError.code === 53000){
-            alert ("critical error " + JSON.stringify(error));
-            return;
-          }
-        }
         localStorage.removeItem('accessToken');
         device.removeListener('ready', prepareToConnect);
         Twilio.Device.destroy();
@@ -180,8 +172,7 @@ function getAccessToken() {
 
 function setupDevice(accessToken) {
   var device = Twilio.Device.setup(accessToken, {
-    enableRingingState: true,
-    debug: true
+    enableRingingState: true
   });
   device.audio.outgoing(false);
   return device;
