@@ -7,6 +7,9 @@ if (chrome.runtime.getManifest().update_url !== undefined) {
     scope.setUser({"username": localStorage.getItem('campaignCode')});
   });
 }
+
+const TWILIO_BASE_URL = "vpb-dialer-5062";
+
 window.onload = () => {
   var setupForm = document.getElementById('create-campaign');
   setupForm.addEventListener('submit', (event) => {
@@ -18,12 +21,12 @@ window.onload = () => {
     var twilioAccountAuthToken = document.getElementById('twilio-auth-token').value.replace(" ", "");
     var email = document.getElementById('email').value.replace(" ", "");
 
-    fetch('https://vpb-dialer-5062.twil.io/create-account?campaignCode=' + campaignCode + '&accessCode=' + accessCode + '&accountSid=' + twilioAccountSid + '&authToken=' + twilioAccountAuthToken + '&email=' + email)
+    fetch('https://' + TWILIO_BASE_URL + '.twil.io/create-account?campaignCode=' + campaignCode + '&accessCode=' + accessCode + '&accountSid=' + twilioAccountSid + '&authToken=' + twilioAccountAuthToken + '&email=' + email)
     .then((response) => {
       return response.json();
     })
     .then((json) => {
-      alert('Your account is created, go back to the options page and follow the instructions.');
+      alert(json.message);
       localStorage.setItem('campaignCode', campaignCode);
       localStorage.setItem('accessCode', accessCode);
       localStorage.removeItem('accessToken');

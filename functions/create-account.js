@@ -1,5 +1,7 @@
 exports.handler = function(context, event, callback) {
 
+  class AccountExistsError extends Error { }
+
   let response = new Twilio.Response();
   let headers = {
     "Access-Control-Allow-Origin": "*",
@@ -31,7 +33,7 @@ exports.handler = function(context, event, callback) {
     useNewUrlParser: true
   });
 
-  var accountDocument = { campaignCode: campaignCode, accessCode: accessCode, accountSid: accountSid, authToken: authToken, email: email };
+  var accountLookupDocument = { campaignCode: campaignCode, accessCode: accessCode };
 
   const connectDbClientPromise = () => {
     return new Promise((resolve, reject) => {
@@ -50,7 +52,7 @@ exports.handler = function(context, event, callback) {
   .then(function() {
     console.log("db lookup");
     const collections = client.db(context.MONGODB_DATABASE_NAME).collection(context.MONGODDB_COLLECTION_NAME);
-    return collections.findOne(accountDocument);
+    return collections.findOne(accountLookupDocument);
   })
   .then(results => {
     if (results == null) {
@@ -61,25 +63,37 @@ exports.handler = function(context, event, callback) {
            voiceUrl: 'https://' + BASE_URL +  '.twil.io/client-voice',
            friendlyName: 'VPB Preview Dialer'
          });
+      } else {
+        throw new AccountExistsError("Please use a different campaign code and access code.");
       }
-      return results;
     })
     .then(results => {
       if (results.campaignCode == null) {
-        accountDocument.twimlSid = results.sid;
         const collections = client.db(context.MONGODB_DATABASE_NAME).collection(context.MONGODDB_COLLECTION_NAME);
-        return collections.insertOne(accountDocument);
+        return collections.insertOne({
+          campaignCode: campaignCode,
+          accessCode: accessCode,
+          accountSid: accountSid,
+          authToken: authToken,
+          twimlSid: results.sid,
+          email: email
+        });
       }
       return results;
     })
     .then(accountRecord => {
-      response.setBody("You've successfully created an account!  Please close this window and return to options.");
+      response.setBody({ message: "You've successfully created an account!  Please close this window and return to options." });
       client.close();
       callback(null, response);
     })
     .catch(error => {
+      console.log(error);
       client.close();
-      console.log(JSON.stringify(error));
-      callback("There was an error creating your account, please try again.", response);
+      if (error instanceof AccountExistsError) {
+        response.setBody({ message: error.message });
+        callback(null, response);
+      } else {
+        callback("There was an error creating your account, please try again.", response);
+      }
     });
 };
