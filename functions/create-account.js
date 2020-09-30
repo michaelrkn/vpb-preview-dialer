@@ -82,7 +82,7 @@ exports.handler = function(context, event, callback) {
       return results;
     })
     .then(accountRecord => {
-      response.setBody({ message: "You've successfully created an account!  Please close this window and return to options." });
+      response.setBody({ message: "You've successfully created an account!  Make sure you don't forget your campaign and access codes, then close this window and return to the Options screen to finish setup." });
       client.close();
       callback(null, response);
     })
@@ -93,7 +93,7 @@ exports.handler = function(context, event, callback) {
         response.setBody({ message: error.message });
         callback(null, response);
       } else {
-        callback("There was an error creating your account, please try again.", response);
+        callback("There was an error creating your account. Please try again.", response);
       }
     });
 };

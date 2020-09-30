@@ -7,7 +7,7 @@
     <style>
       .container {
         padding-bottom: 7.5rem;
-        padding-top: 7.5rem;
+        padding-top: 3rem;
       }
       .intro {
         text-align: center;
@@ -24,31 +24,36 @@
       label {
         font-weight: 500;
       }
+      .single {
+        max-width: 700px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="intro">
-        <h1>Virtual Phone Bank Preview Dialer</h1>
-        <h2><a href="https://www.politicaldialingsystems.com/" target="_blank">By Political Dialing Systems</a></h2>
+        <h1>Create Account</h1>
       </div>
       <div class="row">
-        <div class="column">
-          <h2>Create Account</h2>
-          <p>Create a Campaign Code and Access Code for your account.  These can be given to your team members to use the dialer, but they should be kept secure otherwise. </p>
+        <div class="column" style="max-width: 700px; margin: auto;">
           <form id="create-campaign">
+            <p>The dialer uses a service called Twilio to make phone calls. <a href="https://www.twilio.com/try-twilio" target="_blank">Click here to set up an account with Twilio.</a> You may need to verify your email and a phone number and answer a couple questions. When you get to your Dashboard, copy your Account SID and Auth Token below.</p>
+            <p><img src="twilio-dashboard.png" alt="A screenshot of the Twilio Dashboard."></p>
+            <label for="twilio-account-sid">Twilio Account SID</label>
+            <input type="text" id="twilio-account-sid">
+            <label for="twilio-auth-token">Twilio Auth Token</label>
+            <input type="text" id="twilio-auth-token">
+
+            <p>Choose a Campaign Code and Access Code for your account. Write them down so you don't forget them! You'll give these to your team members so they can use the dialer. Anybody who has them can make phone calls on your account, so only give them to people you trust.</p>
             <label for="campaign-code">Campaign code</label>
             <input type="text" id="campaign-code">
             <label for="access-code">Access code</label>
             <input type="text" id="access-code">
-            <p>Please provide your  email for account recovery.  We won't email you.</p>
+
+            <p>Please provide your email so that if you have issues with your account, we'll know who you are.</p>
             <label for="email">Email</label>
             <input type="text" id="email">
-            <p>Please provide your Twilio account credentials. We recommend creating a Subaccount in your Twilio Account and providing its credentials instead.</p>
-            <label for="twilio-account-sid">Twilio Account SID</label>
-            <input type="text" id="twilio-account-sid">
-            <label for="twilio-auth-token">Twilio Account Auth Token</label>
-            <input type="text" id="twilio-auth-token">
+
             <input type="submit" value="Create Account">
           </form>
         </div>
