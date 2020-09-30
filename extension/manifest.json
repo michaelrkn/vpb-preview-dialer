@@ -16,7 +16,6 @@
     "page": "background.html"
   },
   "permissions": [
-    "activeTab",
-    "https://vpb-dialer-5062.twil.io"
+    "activeTab"
   ]
 }
