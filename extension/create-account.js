@@ -32,7 +32,7 @@ window.onload = () => {
       localStorage.removeItem('accessToken');
     })
     .catch((response) => {
-      alert('Sorry, there was an issue creating your account, please try again.');
+      alert('Sorry, there was an issue creating your account. Please try again.');
     });
   });
 }
