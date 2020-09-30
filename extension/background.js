@@ -9,6 +9,7 @@ if (!inDevelopmentEnvironment()) {
 }
 
 var activeTabs = {};
+const TWILIO_BASE_URL = "vpb-dialer-5062";
 
 chrome.browserAction.onClicked.addListener(function(tab) {
   showInstructions(tab);
@@ -56,6 +57,8 @@ function getControls(url) {
     return 'controls-van.js';
   } else if (url.includes('https://phonebank.bluevote.com/Home/PhoneBank?pt=')) {
     return 'controls-pdi.js';
+  } else if (inDevelopmentEnvironment()) {
+    return "test-dial.js";
   }
 }
 
@@ -134,6 +137,7 @@ function authenticateAndSetup(number, tab) {
     device.on('ready', prepareToConnect);
     device.on('offline', handleOffline);
     device.on('error', ((error) => {
+      chrome.extension.getBackgroundPage().console.log(error);
       if (error.code === 31205 || error.code === 31202) { // access token expired
         localStorage.removeItem('accessToken');
         device.removeListener('ready', prepareToConnect);
@@ -152,7 +156,7 @@ function getAccessToken() {
     var campaignCode = localStorage.getItem('campaignCode');
     var accessCode = localStorage.getItem('accessCode');
 
-    return fetch('https://' + campaignCode + '.twil.io/access-token?accessCode=' + accessCode)
+    return fetch('https://' + TWILIO_BASE_URL + '.twil.io/access-token?campaignCode=' + campaignCode + '&accessCode=' + accessCode)
     .then((response) => {
       return response.json();
     })

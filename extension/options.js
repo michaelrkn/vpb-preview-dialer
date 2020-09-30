@@ -8,6 +8,8 @@ if (chrome.runtime.getManifest().update_url !== undefined) {
   });
 }
 
+const TWILIO_BASE_URL = "vpb-dialer-5062";
+
 window.onload = () => {
   document.getElementById('campaign-code').value = this.localStorage.getItem('campaignCode');
   document.getElementById('access-code').value = this.localStorage.getItem('accessCode');
@@ -29,7 +31,7 @@ window.onload = () => {
     var campaignCode = document.getElementById('campaign-code').value.replace(" ", "");
     var accessCode = document.getElementById('access-code').value.replace(" ", "");
 
-    fetch('https://' + campaignCode + '.twil.io/capability-token?accessCode=' + accessCode)
+    fetch('https://' + TWILIO_BASE_URL + '.twil.io/access-token?campaignCode=' + campaignCode + '&accessCode=' + accessCode)
     .then((response) => {
       return response.json();
     })
@@ -51,13 +53,14 @@ window.onload = () => {
 
     var phone = document.getElementById('number').value.replace(/\D/g,'');
     var campaignCode = localStorage.getItem('campaignCode');
+    var accessCode = localStorage.getItem('accessCode');
 
     if (phone.length !== 10) {
       alert('Please enter a valid 10-digit phone number.');
     } else if (!campaignCode) {
       alert('Set your campaign and access codes before setting your caller ID.')
     } else {
-      fetch('https://' + campaignCode + '.twil.io/verify-caller-id?phone=' + phone)
+      fetch('https://' + TWILIO_BASE_URL + '.twil.io/verify-caller-id?phone=' + phone + '&campaignCode=' + campaignCode + '&accessCode=' + accessCode)
       .then((response) => {
         return response.json();
       })
@@ -98,7 +101,7 @@ function setCallerID(phone) {
 }
 
 function checkCallerID(phone, verificationCode, campaignCode) {
-  fetch('https://' + campaignCode + '.twil.io/check-caller-id?phone=' + phone)
+  fetch('https://' + TWILIO_BASE_URL + '.twil.io/check-caller-id?phone=' + phone + '&campaignCode=' + campaignCode + '&accessCode=' + accessCode)
   .then((response) => {
     return response.json();
   })
