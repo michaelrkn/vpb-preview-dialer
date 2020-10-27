@@ -5,10 +5,17 @@ exports.handler = function(context, event, callback) {
     "Access-Control-Allow-Methods": "GET",
     "Content-Type": "application/json"
   };
+
   response.setHeaders(headers);
 
   const accessCode = event.accessCode;
   const campaignCode = event.campaignCode;
+
+  if (campaignCode == null || accessCode == null){
+    console.log(event);
+    callback("Missing required paramaters", response);
+    return;
+  }
 
   const MongoClient = require('mongodb').MongoClient;
   const uri = "mongodb+srv://" + context.MONGODB_USER +  ":" + context.MONGODB_PASSWORD + "@cluster0.musam.mongodb.net/" + context.MONGODB_DATABASE_NAME + "?retryWrites=true&w=majority";
@@ -41,22 +48,23 @@ exports.handler = function(context, event, callback) {
       throw new Error("account doesn't exist");
     }
 
-  const accountSid = account.accountSid;
-  const authToken = account.authToken;
-  const twilioClient = require('twilio')(accountSid, authToken);
+    const accountSid = account.accountSid;
+    const authToken = account.authToken;
+    const twilioClient = require('twilio')(accountSid, authToken);
 
-  twilioClient.outgoingCallerIds
-  .list({
-    phoneNumber: event.phone
-  })
-  .then(function(caller_id) {
-    response.setStatusCode(200);
-    if (caller_id.length === 1) {
-      response.setBody({'verified': true});
-    } else {
-      response.setBody({'verified': false});
-    }
-    callback(null, response)
-  })
-  .done();
-};
+    twilioClient.outgoingCallerIds
+    .list({
+      phoneNumber: event.phone
+    })
+    .then(function(caller_id) {
+      response.setStatusCode(200);
+      if (caller_id.length === 1) {
+        response.setBody({'verified': true});
+      } else {
+        response.setBody({'verified': false});
+      }
+      callback(null, response)
+    })
+    .done();
+  });
+}
