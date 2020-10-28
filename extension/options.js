@@ -73,7 +73,7 @@ window.onload = () => {
           var verificationCode = json.verificationCode;
           var checkVerification = confirm('When called, enter ' + verificationCode + ' when asked for your verification code. Click OK after verifying, or Cancel to enter a new number.');
           if (checkVerification) {
-            checkCallerID(phone, verificationCode, campaignCode);
+            checkCallerID(phone, verificationCode, campaignCode, accessCode);
           }
         } else {
           alert("There was an unexpected error: " + json.message);
@@ -100,7 +100,7 @@ function setCallerID(phone) {
   localStorage.setItem('outgoingCallerID', phone);
 }
 
-function checkCallerID(phone, verificationCode, campaignCode) {
+function checkCallerID(phone, verificationCode, campaignCode, accessCode) {
   fetch('https://' + TWILIO_BASE_URL + '.twil.io/check-caller-id?phone=' + phone + '&campaignCode=' + campaignCode + '&accessCode=' + accessCode)
   .then((response) => {
     return response.json();
@@ -111,7 +111,7 @@ function checkCallerID(phone, verificationCode, campaignCode) {
     } else {
       checkAgain = confirm('Your caller ID is not verified. Your code was ' + verificationCode + '. If you clicked OK before entering the code, enter it and click OK to check again. If you did not get a verification call, click Cancel, check the phone number you entered, and try again.');
       if (checkAgain) {
-        checkCallerID(phone, verificationCode, campaignCode);
+        checkCallerID(phone, verificationCode, campaignCode, accessCode);
       }
     }
   });
