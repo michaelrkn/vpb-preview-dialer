@@ -57,6 +57,8 @@ function getControls(url) {
     return 'controls-van.js';
   } else if (url.includes('https://phonebank.bluevote.com/Home/PhoneBank?pt=')) {
     return 'controls-pdi.js';
+  } else if (url.includes('nationbuilder.com/admin/custom_lists/')) {
+    return 'controls-nb.js';
   } else if (inDevelopmentEnvironment()) {
     return "test-dial.js";
   }
