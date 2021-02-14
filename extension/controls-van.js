@@ -55,8 +55,8 @@ function setupInterface() {
       if (reached) { switchButton.click(); }
       var element = document.querySelectorAll('input[name="resultCodeId"][value="1"]')[0];
       element.click();
-      chrome.runtime.sendMessage({ getDevelopment: true }, (development) => {
-        if (!development) {
+      chrome.runtime.sendMessage({ getDisableLoadNextContact: true }, (disableLoadNextContact) => {
+        if (!disableLoadNextContact) {
           goToNextContact();
         }
       });

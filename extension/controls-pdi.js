@@ -42,8 +42,8 @@ function goToNextContact() {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message === 'unanswered') {
     notHomeSelection().click();
-    chrome.runtime.sendMessage({ getDevelopment: true }, (development) => {
-      if (!development) {
+    chrome.runtime.sendMessage({ getDisableLoadNextContact: true }, (disableLoadNextContact) => {
+      if (!disableLoadNextContact) {
         goToNextContact();
       }
     });

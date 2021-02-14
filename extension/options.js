@@ -16,6 +16,7 @@ window.onload = () => {
   document.getElementById('number').value = localStorage.getItem('outgoingCallerID');
   document.getElementById('callOnLoad').checked = JSON.parse(localStorage.getItem('callOnLoad'));
   document.getElementById('ringUntilVoicemail').checked = JSON.parse(localStorage.getItem('ringUntilVoicemail'));
+  document.getElementById('disableLoadNextContact').checked = JSON.parse(localStorage.getItem('disableLoadNextContact'));
 
   navigator.mediaDevices.getUserMedia({audio: true}). // get microphone permissions
   then((stream) => stream.getTracks()[0].stop()). // request microphone permissions
@@ -93,6 +94,18 @@ window.onload = () => {
   document.getElementById('ringUntilVoicemail').onclick = (event) => {
     localStorage.setItem('ringUntilVoicemail', document.getElementById('ringUntilVoicemail').checked);
   }
+
+  document.getElementById('disableLoadNextContact').onclick = (event) => {
+    localStorage.setItem('disableLoadNextContact', document.getElementById('disableLoadNextContact').checked);
+  }
+
+  if (inDevelopmentEnvironment()) {
+    document.getElementById('disableLoadNextContactOption').style.display = 'block';
+  }
+}
+
+function inDevelopmentEnvironment() {
+  return chrome.runtime.getManifest().update_url === undefined;
 }
 
 function setCallerID(phone) {

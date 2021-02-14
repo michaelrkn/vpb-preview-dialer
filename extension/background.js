@@ -98,8 +98,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   var tab = sender.tab.id;
   if (message.getCallOnLoad) {
     sendResponse(JSON.parse(localStorage.getItem('callOnLoad')));
-  } else if (message.getDevelopment) {
-    sendResponse(inDevelopmentEnvironment());
+  } else if (message.getDisableLoadNextContact) {
+    sendResponse(disableLoadNextContact());
   } else if (message.hangup) {
     hangup();
   } else if (message.sendDigit) {
@@ -231,6 +231,10 @@ function sendDigit(digit) {
   }
 }
 
+function disableLoadNextContact() {
+  return JSON.parse(localStorage.getItem('disableLoadNextContact'));
+}
+
 function inDevelopmentEnvironment() {
-  return chrome.runtime.getManifest().update_url === undefined;
+  return chrome.runtime.getManifest().update_url !== undefined;
 }
