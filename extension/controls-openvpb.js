@@ -19,9 +19,9 @@ function watchForChanges() {
 function insertsContactData(mutations) {
   if (mutations[2]) {
     if (mutations[2].addedNodes[0]) {
-      return mutations[2].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+      return mutations[2].addedNodes[0].firstChild.classList.value === "col-md-9 app-data-container openvpb-data-container"
     } else {
-      return mutations[4].addedNodes[0].classList.value === "col-md-9 app-data-container openvpb-data-container"
+      return mutations[4].addedNodes[0].firstChild.classList.value === "col-md-9 app-data-container openvpb-data-container"
     }
   }
 }
